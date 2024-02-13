@@ -6,5 +6,4 @@ module.exports = {
         message.channel.send('Pong!')
             .then(() => console.log('Replied with Pong!'))
             .catch(console.error); // Log any errors in sending the message
-
 }};
