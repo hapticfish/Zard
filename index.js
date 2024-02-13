@@ -27,8 +27,22 @@ client.once('ready', () => {
 });
 
 client.on('messageCreate', message => {
-    if (!message.content.startsWith('!') ||  message.author.bot) return;
-})
+    if (!message.content.startsWith('!') || message.author.bot) return;
+
+    const args = message.content.slice(1).trim().split(/ +/);
+    const commandName = args.shift().toLowerCase();
+
+    if (!client.commands.has(commandName)) return;
+
+    const command = client.commands.get(commandName);
+
+    try {
+        command.execute(message, args);
+    } catch (error) {
+        console.error(error);
+        message.reply('There was an error executing that command.');
+    }
+});
 
 // client.on('messageCreate', message => {
 //     console.log(`Message received: ${message.content}`); // Log every message received to debug
