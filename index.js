@@ -10,6 +10,8 @@ const client = new Client({
         GatewayIntentBits.GuildMembers
     ]
 });
+
+
 const fs = require('fs');
 const token = 'MTIwNjc1NzA0Njg5NzM0NDU4Mg.GO-h0m.BHm_M1_NCXs4U7C5R0-LVPDqN7b5cNel_B81Pc'
 const moment = require('moment-timezone');
