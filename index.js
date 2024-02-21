@@ -1,6 +1,5 @@
+require('dotenv').config();
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-// const fetch = require('node-fetch');
-
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -22,6 +21,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
+    console.log(`Loading command ${command.name}`);
 }
 
 client.once('ready', () => {
@@ -46,4 +46,4 @@ client.on('messageCreate', message => {
     }
 });
 
-client.login(token);
+client.login(process.env.DISCORD_TOKEN);
