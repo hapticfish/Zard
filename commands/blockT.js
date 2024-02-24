@@ -6,7 +6,7 @@ async function loadFetch() {
 }
 
 module.exports = {
-    name: 'blockT',
+    name: 'blockt',
     execute: async (message, args) => {
         console.log(`[START] Execute function triggered.`);
         console.log(`Message received: ${message.content}`);
@@ -18,53 +18,60 @@ module.exports = {
             return message.channel.send('You need to provide the ticker symbol of the cryptocurrency.');
         }
 
-        console.log('Attempting to load fetch module dynamically...');
-        const fetch = await loadFetch(); // Load fetch dynamically
+        process.on('unhandledRejection', (reason, promise) => {
+            console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+            // Application specific logging, throwing an error, or other logic here
+        });
 
-        async function fetchLast10BlocksAndCalculateAverageBlockTime() {
-            const timeInMillis = Date.now(); // Current time in milliseconds
-            const url = `https://blockchain.info/blocks/${timeInMillis}?format=json`;
-            console.log(`Fetching last 10 blocks from: ${url}`);
+        const currentTimestamp = new Date().getTime();
 
-            try {
-                const response = await fetch(url);
-                console.log(`Received response from API. HTTP status: ${response.status}`);
-                const data = await response.json();
+        const baseUrl = 'https://blockchain.info/blocks/';
+        const format = '?format=json';
 
-                if (data && data.blocks && data.blocks.length > 0) {
-                    console.log('Blocks data found. Length:', data.blocks.length);
-                    const blocks = data.blocks.slice(0, 10); // Assuming the API returns the latest blocks first
+// Combine the URL with the current timestamp and format
+        const url = `${baseUrl}${currentTimestamp}${format}`;
 
-                    let totalBlockTime = 0;
-                    for (let i = 0; i < blocks.length - 1; i++) {
-                        console.log(`Calculating time difference for block: ${blocks[i].height}`);
-                        totalBlockTime += blocks[i].time - blocks[i + 1].time;
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(blocks => {
+                console.log('Blocks Data:', blocks);
+
+                if (blocks.length >= 10) {
+                    // Take the last 10 blocks
+                    const last10Blocks = blocks.slice(0, 10);
+                    let totalCompletionTime = 0;
+
+                    // Calculate the total completion time of the last 10 blocks
+                    for (let i = 0; i < last10Blocks.length - 1; i++) {
+                        totalCompletionTime += last10Blocks[i].time - last10Blocks[i + 1].time;
                     }
 
-                    const averageBlockTime = totalBlockTime / (blocks.length - 1);
-                    const hours = Math.floor(averageBlockTime / 3600);
-                    const minutes = Math.floor((averageBlockTime % 3600) / 60);
-                    const seconds = Math.floor(averageBlockTime % 60);
+                    // Calculate the average completion time
+                    const averageCompletionTimeInSeconds = totalCompletionTime / (last10Blocks.length - 1);
+                    const averageMinutes = Math.floor(averageCompletionTimeInSeconds / 60);
+                    const averageSeconds = averageCompletionTimeInSeconds % 60;
 
-                    // Format the time in HH:MM:SS
-                    const formattedTime = [
-                        hours.toString().padStart(2, '0'),
-                        minutes.toString().padStart(2, '0'),
-                        seconds.toString().padStart(2, '0')
-                    ].join(':');
+                    message.channel.send(`Average Completion Time for the last 10 blocks: ${averageMinutes} minutes and ${averageSeconds.toFixed(0)} seconds`);
 
-                    console.log(`Calculated average time: ${formattedTime}. Sending response...`);
-                    return message.channel.send(`Average Block Completion Time (HH:MM:SS): ${formattedTime}`).then(() => console.log('Response sent to message successfully.')).catch(err => console.error('Failed to send reply:', err));
+                    // Calculate and display the completion times for the last 3 blocks
+                    message.channel.send('Completion Times for the Last 3 Blocks:');
+                    for (let i = 0; i < 3; i++) { // Only iterate through the first 3 of the last 3 blocks for comparison
+                        const completionTimeInSeconds = blocks[i].time - blocks[i + 1].time;
+                        const minutes = Math.floor(completionTimeInSeconds / 60);
+                        const seconds = completionTimeInSeconds % 60;
+                        message.channel.send(`Block ${blocks[i].height} to Block ${blocks[i + 1].height}: ${minutes} minutes and ${seconds.toFixed(0)} seconds`);
+                    }
                 } else {
-                    console.log('No valid blocks data found. Most likely an error with the provided response.');
-                    return message.channel.send("No valid block data found.");
+                    console.log('Not enough blocks to calculate an average completion time or completion times for the last 3 blocks.');
                 }
-            } catch (error) {
-                console.error('Error occurred while fetching block data:', error);
-                return message.channel.send("Failed to fetch block data.");
-            }
-        }
+            })
+            .catch(e => console.log('Error:', e));
 
-        fetchLast10BlocksAndCalculateAverageBlockTime().then(() => console.log('[COMPLETE] Execution of command complete.')).catch(error => console.error('Error during execution:', error));
-    }
+
+    }//end execute
 };
