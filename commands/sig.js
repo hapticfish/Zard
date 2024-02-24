@@ -5,6 +5,6 @@ module.exports = {
         console.log(`Message received: ${message.content}`);
         console.log('!sig command received'); // Confirm command is detected
 
-        
+
     }
 }
