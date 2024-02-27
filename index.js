@@ -21,9 +21,6 @@ for (const file of commandFiles){
     console.log(`Loading command ${command.name}`);
 }
 
-// Import the Twitter stream module
-const { startTwitterStream } = require('./services/twitterStream'); // Adjust the path if you placed it in a different directory
-
 client.once('ready', () => {
     console.log('Ready!');
 });
