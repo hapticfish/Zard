@@ -20,13 +20,17 @@ Hello! I am your guide for all things crypto in this dangerous and strange world
    - *Description*: Converts an amount from one cryptocurrency to another.
    - *Example*: \`!convert 100 BTC ETH\`
 
-4. **!portfolio**
-   - *Description*: Displays your current cryptocurrency portfolio.
-   - *Example*: \`!portfolio\`
-
-5. **!alert <crypto_symbol> <target_price>**
+4. **!alert <crypto_symbol> <target_price>**
    - *Description*: Sets a price alert for a cryptocurrency.
    - *Example*: \`!alert BTC 50000\`
+   
+5. **!fee <crypto_symbol>**
+   - *Description*: Displays current blockchain completions fee values.
+   - *Example*: \`!fee btc\`
+   
+6. **!blockt <crypto_symbol>**
+- *Description*: Displays the current estimated block time completion. Average and last 3 blocks.
+- *Example*: \`!alert BTC 50000\`
 
 What can I help you with today, Traveler?
         `;
