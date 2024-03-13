@@ -57,7 +57,8 @@ module.exports = {
             }
 
             // Send the conversion result to the Discord channel
-            message.channel.send(`${amount} ${args[1].toUpperCase()} is equivalent to ${convertedAmount.toFixed(5)} ${args[2].toUpperCase()}.`);
+            message.channel.send(`${amount} ${args[1].toUpperCase()} is equivalent to ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${args[2].toUpperCase()}.`);
+
         } catch (error) {
             console.error('Error fetching the conversion rate:', error);
             message.channel.send('There was an error fetching the conversion rate.');
