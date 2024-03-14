@@ -1,41 +1,19 @@
-// Require the necessary library
 const { Pool } = require('pg');
 
-// Create a pool instance with connection details
+// Initialize a connection pool
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    // Additional configuration options as needed
+    // Additional configurations as necessary, such as SSL
 });
 
-// Function to add an alert to the database
-async function addAlert(userId, cryptoPair, targetPrice, direction) {
-    const query = `
-        INSERT INTO alerts (user_id, crypto_pair, target_price, direction, active)
-        VALUES ($1, $2, $3, $4, true)
-        RETURNING *;`; // Returns the added alert
-    const values = [userId, cryptoPair, targetPrice, direction];
-    try {
-        const { rows } = await pool.query(query, values);
-        return rows[0];
-    } catch (err) {
-        console.error('Error adding alert to database:', err);
-        throw err;
-    }
-}
+pool.query('SELECT NOW()', (err, res) => {
+    console.log(err, res);
+    pool.end();
+});
 
-// Function to deactivate an alert
-async function deactivateAlert(alertId) {
-    const query = `UPDATE alerts SET active = FALSE WHERE id = $1;`;
-    try {
-        await pool.query(query, [alertId]);
-    } catch (err) {
-        console.error('Error deactivating alert:', err);
-        throw err;
-    }
-}
+module.exports = { pool };
 
-// Export the functions for use in other parts of the application
-module.exports = {
-    addAlert,
-    deactivateAlert,
-};
+
+//TODO continue with running powershell admin for pg_dump for back up ('GPT currency conversion')
+//TODO schedule regular back ops with windows task scheduler
+//TODO follow guide for connecting App to PostgreSQL with SSL ('GPT currncy conversion')

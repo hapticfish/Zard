@@ -1,5 +1,5 @@
 const { subscribeToPair } = require('../services/websocketService');
-const { addAlert } = require('../models'); // Adjust based on your actual database integration
+const AlertModel = require('../database/alertModel');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
 
 module.exports = {
@@ -17,18 +17,21 @@ module.exports = {
 
         const formattedPair = formatPairForAllExchanges(cryptoPair.replace(/[-\s]/g, '').toUpperCase()).BINANCE;
 
-        // Assume addAlert function saves the alert config and returns a success status or the saved alert object
-        addAlert(message.author.id, formattedPair, targetPrice)
-            .then(() => {
+        // Adding the alert to the database
+        AlertModel.addAlert(message.author.id, formattedPair, targetPrice, 'above') // Assuming direction is 'above'
+            .then(alert => {
                 message.channel.send(`Alert set for ${formattedPair} to reach ${targetPrice}.`);
 
-                // Subscribe to pair for real-time updates
+                // Subscribing to real-time updates for the crypto pair
                 subscribeToPair(formattedPair, (newPrice) => {
                     const price = parseFloat(newPrice);
                     if ((targetPrice >= price) || (targetPrice <= price)) {
                         try {
-                            message.author.send(`Alert: ${formattedPair} has reached your target price of ${targetPrice}. Current price: ${price}.`);
-                            // Here, include logic to update or deactivate the alert in your database to avoid repeated notifications
+                            message.author.send(`Alert: ${formattedPair} has reached your target price of ${targetPrice}. Current price: ${truncateToFiveDec(price)}.`);
+                            // Deactivating the alert in the database
+                            AlertModel.deactivateAlert(alert.id)
+                                .then(() => console.log(`Alert ${alert.id} deactivated`))
+                                .catch(error => console.error('Error deactivating alert:', error));
                         } catch (error) {
                             console.error('Error sending alert notification:', error);
                         }

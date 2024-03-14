@@ -14,6 +14,7 @@
     "dotenv": "^16.4.5",
     "moment-timezone": "^0.5.45",
     "node-fetch": "^3.3.2",
+    "pg": "^8.11.3",
     "puppeteer": "^22.1.0",
     "twit": "^2.2.11"
   }
