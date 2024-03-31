@@ -1,5 +1,14 @@
 
-const fetch = require('node-fetch');
+// const fetch = require('node-fetch');
+// Dynamically import node-fetch as an ES Module
+async function fetchData(url) {
+    const { default: fetch } = await import('node-fetch');
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+
+
 function formatPairForAllExchanges(normalizedPair) {
     const formatRules = {
         'BINANCE': pair => pair,
@@ -34,5 +43,6 @@ async function fetchMarketData(symbol) {
 module.exports = {
     formatPairForAllExchanges,
     truncateToFiveDec,
-    fetchMarketData
+    fetchMarketData,
+    fetchData
 };
