@@ -1,0 +1,13 @@
+Alert function
+    delete alert command
+    active till canceled alert
+
+        update deactivation enum for 'deleted_by_user'
+
+
+Sentiment Analysis
+    scan existing chats from all channels accepted in discords
+    call to display current ananlysis
+    other functions
+
+update database sentiment analysis feilds

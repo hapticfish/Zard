@@ -3,10 +3,16 @@ const AlertModel = require('../database/alertModel');
 
 const subscribers = {};
 
-function subscribeToPair(pair, alertId, targetPrice, direction, callback) {
-    console.log(`Subscribing to pair: ${pair} with alertId: ${alertId}, targetPrice: ${targetPrice}, direction: ${direction}`);
+let lastLogTime = 0; // Timestamp of the last log for rate-limited logging
+const logInterval = 4000; // Log interval in milliseconds (4 seconds)
+const notificationCooldown = 5000; // 15 minutes cooldown for notifications
+const priceThresholdPercentage = 0.0001475; // 0.01475% threshold for price difference
+
+function subscribeToPair(pair, alertId, targetPrice, direction, alertType, callback) {
+    console.log(`Subscribing to pair: ${pair} with alertId: ${alertId}, targetPrice: ${targetPrice}, direction: ${direction}, type: ${alertType}`);
+
     if (typeof callback !== 'function') {
-        throw new Error('The callback must be a function.');
+        throw new Error('Callback must be a function.');
     }
 
     // Initialize subscription for the pair if it doesn't exist
@@ -14,52 +20,96 @@ function subscribeToPair(pair, alertId, targetPrice, direction, callback) {
         subscribers[pair] = {};
         const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${pair.toLowerCase()}@trade`);
 
-        ws.on('open', () => console.log(`Connected to WebSocket for pair ${pair}`));
+        ws.on('open', () => console.log(`Connected to WebSocket for pair ${pair}.`));
 
-        ws.on('message', (data) => {
+        ws.on('message', async (data) => {
+            const currentTime = Date.now();
+            const parsedData = JSON.parse(data);
+            const priceFloat = parseFloat(parsedData.p);
+
+            // Skip processing if the alert has been deleted or deactivated
+            if (!subscribers[pair] || !subscribers[pair][alertId]) {
+                return;
+            }
+
+            // Check if alert has been deleted or deactivated before proceeding
+            const status = await AlertModel.fetchAlertStatus(alertId);
+            if (status !== 'Active' && status !== 'Triggered') {
+                console.log(`Alert ${alertId} is not active or triggered (status: ${status}). Skipping.`);
+                delete subscribers[pair][alertId];
+                return;
+            }
+
+            if (currentTime - lastLogTime > logInterval) {
+                console.log(`Received trade data for ${pair}: price = ${priceFloat}`);
+                console.log(`Evaluating alert condition for ${pair}. Current price: ${priceFloat}, Target price: ${targetPrice}, Direction: ${direction}`);
+                lastLogTime = currentTime;
+            }
+
             const { p: price } = JSON.parse(data);
-            const priceFloat = parseFloat(price);
-            // Evaluate the alert condition based on direction and target price
-            const shouldTriggerAlert = (direction === 'above' && priceFloat >= targetPrice) || (direction === 'below' && priceFloat <= targetPrice);
 
             const alertDetails = subscribers[pair][alertId];
-            if (alertDetails && !alertDetails.triggered) {
-                if ((direction === 'above' && priceFloat >= targetPrice) || (direction === 'below' && priceFloat <= targetPrice)) {
+            if (!alertDetails) return;
+
+            const priceDifferencePercentage = Math.abs((priceFloat - targetPrice) / targetPrice);
+            const isWithinThreshold = priceDifferencePercentage <= priceThresholdPercentage;
+            const timeSinceLastNotification = currentTime - (alertDetails.lastNotificationTime || 0);
+            const shouldNotify = timeSinceLastNotification >= notificationCooldown;
+
+
+
+            // Re-introducing shouldTriggerAlert for clarity and control
+            const shouldTriggerAlert = (direction === 'above' && priceFloat > targetPrice) || (direction === 'below' && priceFloat < targetPrice);
+
+            if (shouldTriggerAlert && (shouldNotify || alertType === 'standard')) {
+
+                // // For perpetual alerts, ensure they are reactivated if they were previously triggered
+                // if (status === 'Triggered' && alertType === 'perpetual') {
+                //     await AlertModel.reactivateAlert(alertId);  // This function needs to be implemented
+                //     alertDetails.triggered = false; // Reset the triggered flag for perpetual alerts
+                // }
+
+                if (isWithinThreshold || alertType === 'standard') {
+                    alertDetails.lastNotificationTime = currentTime; // Update notification time only if within threshold or standard alert
+
                     console.log(`Alert ${alertId} condition met. Price: ${priceFloat}`);
-                    alertDetails.triggered = true; // Mark the alert as triggered to prevent duplicate triggers
                     callback(priceFloat, alertId).then(() => {
-                        console.log(`Callback executed for Alert ${alertId}. Now triggering and deactivating.`);
-                        AlertModel.triggerAlert(alertId).then(alert => {
-                            console.log(`Alert ${alertId} triggered with details: `, alert);
-                            AlertModel.deactivateAlert(alertId, "Triggered").then(() => {
-                                console.log(`Alert ${alertId} deactivated.`);
-                                delete subscribers[pair][alertId]; // Ensure cleanup is done after deactivation
-                            }).catch(deactivateError => console.error(`Error deactivating Alert ${alertId}:`, deactivateError));
-                        }).catch(triggerError => console.error(`Error triggering Alert ${alertId}:`, triggerError));
+                        console.log(`Callback executed for Alert ${alertId}.`);
+                        AlertModel.triggerAlert(alertId).then(() => {
+                            console.log(`Alert ${alertId} triggered.`);
+                            if (alertType === 'standard') {
+                                AlertModel.deactivateAlert(alertId, "Triggered").then(() => {
+                                    console.log(`Alert ${alertId} deactivated.`);
+                                    delete subscribers[pair][alertId]; // Cleanup after deactivation for standard alerts
+                                });
+                            }
+                        });
                     });
                 }
             }
         });
 
         ws.on('error', (error) => {
-            console.error('WebSocket encountered an error:', error);
+            console.error(`WebSocket error for pair ${pair}:`, error);
             if (error.message.includes('451')) {
                 console.error('Error code: 451. Unable to collect data. Accessing Binance from potentially restricted region.');
-                // Consider implementing a retry mechanism or alternative data source
+                // This logs and handles the 451 error specifically
             }
         });
+    } else {
+        subscribers[pair][alertId] = { targetPrice, direction, callback, triggered: false, alertType, lastNotificationTime: 0 };
     }
 
-    // Initialize the alert details with a 'triggered' flag to false
-    subscribers[pair][alertId] = { targetPrice, direction, callback, triggered: false };
 }
 
 async function handlePriceUpdate(price, alertId) {
-    console.log(`handlePriceUpdate called for Alert ${alertId} with price: ${price}`);
+    // This function is for manual price updates and alert deactivations.
+    console.log(`Manual price update for alert ${alertId}: ${price}.`);
     try {
         // Deactivate alert after it's been triggered
         await AlertModel.deactivateAlert(alertId);
-        console.log(`Alert ${alertId} deactivated after price update.`);
+        console.log(`Alert ${alertId} deactivated.`);
+        // This deletes the alert from the subscribers if it exists
         Object.keys(subscribers).forEach((pair) => {
             if (subscribers[pair][alertId]) {
                 console.log(`Deleting Alert ${alertId} from subscribers.`);
@@ -67,12 +117,10 @@ async function handlePriceUpdate(price, alertId) {
             }
         });
     } catch (error) {
-        console.error(`Error handling price update for Alert ${alertId}:`, error);
+        console.error(`Error deactivating alert ${alertId}:`, error);
     }
 }
 
+
+
 module.exports = { subscribeToPair, handlePriceUpdate };
-
-
-//todo alerts being created but now not triggered. succesfully showing in log that their created and
-//todo also showing created in database.
