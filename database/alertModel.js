@@ -110,8 +110,35 @@ const AlertModel = {
             console.error(`Error reactivating alert ${alertId}:`, err.message);
             throw err;
         }
+    },
+
+    // In alertModel.js or wherever your AlertModel is defined
+
+    async deactivateAllAlerts(userId, reason = 'User requested') {
+        console.log(`Deactivating all alerts for User ID=${userId}`);
+        const query = `
+        UPDATE alerts
+        SET status = 'Deactivated', 
+            deactivation_reason = $2, 
+            deletion_date = CURRENT_TIMESTAMP
+        WHERE user_id = $1 AND status = 'Active';`; // Make sure this condition matches your schema and requirements
+        try {
+            const { rowCount } = await pool.query(query, [userId, reason]);
+            console.log(`${rowCount} alerts deactivated successfully for User ID=${userId}.`);
+        } catch (err) {
+            console.error(`Error deactivating all alerts for User ID=${userId}:`, err.message);
+            throw err; // Or handle this error as you see fit
+        }
     }
+
+
 
 };
 
 module.exports = AlertModel;
+
+/*todo
+* modle deleteAllAlerts on deactivate alert
+*
+*
+* */
