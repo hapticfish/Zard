@@ -5,7 +5,7 @@ const subscribers = {};
 
 let lastLogTime = 0; // Timestamp of the last log for rate-limited logging
 const logInterval = 4000; // Log interval in milliseconds (4 seconds)
-const notificationCooldown = 5000; // 15 minutes cooldown for notifications
+const notificationCooldown = 480000; // 8 minutes cooldown for notifications
 const priceThresholdPercentage = 0.0001475; // 0.01475% threshold for price difference
 
 function subscribeToPair(pair, alertId, targetPrice, direction, alertType, callback) {

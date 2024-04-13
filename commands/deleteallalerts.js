@@ -7,7 +7,7 @@ module.exports = {
         const userId = message.author.id; // Or however you get the user ID
 
         try {
-            await AlertModel.deleteAllAlerts(userId, 'User deactivated all alerts');
+            await AlertModel.deactivateAllAlerts(userId, 'User deactivated all alerts');
             message.channel.send('All your alerts have been successfully deleted.');
         } catch (error) {
             console.error(error);

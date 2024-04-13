@@ -22,7 +22,7 @@ module.exports = {
         // Ensuring the alertType is either "standard" or "perpetual"
         if (!["standard", "perpetual"].includes(alertType)) {
             console.log('Invalid alert type argument for alert command.');
-            return message.channel.send('Alert type must be either "standard" or "perpetual".');
+            return message.channel.send('Alert type must be either "s" for standard alert or "p" for perpetual alert.');
         }
 
         const targetPrice = parseFloat(targetPriceInput);
