@@ -12,6 +12,7 @@ const client = new Client({
 
 
 const fs = require('fs');
+const {initAlerts} = require("./services/websocketService");
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -23,6 +24,7 @@ for (const file of commandFiles){
 
 client.once('ready', () => {
     console.log('Ready!');
+    // initAlerts();
 });
 
 client.on('messageCreate', message => {

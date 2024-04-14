@@ -2,6 +2,7 @@ const WebSocket = require('ws');
 const AlertModel = require('../database/alertModel');
 
 const subscribers = {};
+const webSockets = {};
 
 let lastLogTime = 0; // Timestamp of the last log for rate-limited logging
 const logInterval = 4000; // Log interval in milliseconds (4 seconds)
@@ -16,14 +17,17 @@ function subscribeToPair(pair, alertId, targetPrice, direction, alertType, callb
     }
 
     // Initialize subscription for the pair if it doesn't exist
-    if (!subscribers[pair]) {
-        subscribers[pair] = {};
+    if (!webSockets[pair]) {
+
         const ws = new WebSocket(`wss://stream.binance.com:9443/ws/${pair.toLowerCase()}@trade`);
         ws.on('open', () => console.log(`Connected to WebSocket for pair ${pair}.`));
         ws.on('message', (data) => handleMessage(data, pair));
+        ws.on('close', () => { delete webSockets[pair]; });
         ws.on('error', (error) => handleWebSocketError(error, pair));
+        webSockets[pair] = ws;
     }
     // Add or update the alert in the subscribers object
+    subscribers[pair] = subscribers[pair] || {};
     subscribers[pair][alertId] = {targetPrice, direction, callback, alertType, lastNotificationTime: 0};
 }
 
@@ -98,6 +102,14 @@ function logActiveAlerts(pair, currentPrice) {
     });
 }
 
+async function initAlerts() {
+    console.log('Initializing alerts...');
+    const activeAlerts = await AlertModel.getAllActiveAlerts(); // This method needs to be implemented in AlertModel
+    activeAlerts.forEach(alert => {
+        subscribeToPair(alert.crypto_pair, alert.id, alert.target_price, alert.direction, alert.alert_type, alertCallback);
+    });
+}
+
 
 
 async function handlePriceUpdate(price, alertId) {
@@ -121,4 +133,4 @@ async function handlePriceUpdate(price, alertId) {
 
 
 
-module.exports = { subscribeToPair, handlePriceUpdate };
+module.exports = { subscribeToPair, initAlerts, handlePriceUpdate };
