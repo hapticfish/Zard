@@ -1,6 +1,6 @@
 const WebSocket = require('ws');
 const AlertModel = require('../database/alertModel');
-
+const { createFlexibleAlertCallback } = require('../utils/callbackFactory');
 const subscribers = {};
 const webSockets = {};
 
@@ -104,9 +104,15 @@ function logActiveAlerts(pair, currentPrice) {
 
 async function initAlerts() {
     try {
-        const activeAlerts = await AlertModel.getAllActiveAlerts();
+        const activeAlerts = await AlertModel.getAllActiveAlerts(); // Ensure this method is correctly implemented in AlertModel
         activeAlerts.forEach(alert => {
-            subscribeToPair(alert.crypto_pair, alert.id, alert.target_price, alert.direction, alert.alert_type, alertCallback);
+            subscribeToPair(alert.crypto_pair, alert.id, alert.target_price, alert.direction, alert.alert_type, createFlexibleAlertCallback({
+                formattedPair: alert.crypto_pair,
+                targetPrice: alert.target_price,
+                direction: alert.direction,
+                alertType: alert.alert_type
+                // No message object passed; maybe log or handle alerts differently
+            }));
         });
         console.log('Alerts initialized successfully.');
     } catch (error) {

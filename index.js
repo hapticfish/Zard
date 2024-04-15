@@ -30,7 +30,7 @@ client.once('ready', async () => {
         // Verify database connection before initializing alerts
         const res = await pool.query('SELECT NOW()'); // Simple query to check database responsiveness
         console.log('Database connection time:', res.rows[0].now);
-        await initAlerts(); //initialize alerts
+        await initAlerts();
         console.log('Alerts initialized successfully.');
     } catch (error) {
         console.error('Failed to initialize alerts or database error:', error);

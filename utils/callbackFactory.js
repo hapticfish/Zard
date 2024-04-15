@@ -1,5 +1,5 @@
 // CallbackFactory.js
-const AlertModel = require('./database/alertModel');
+const AlertModel = require('../database/alertModel');
 //might need to handle turnicate price function in here.
 function createFlexibleAlertCallback(context) {
     return async function alertCallback(newPrice, alertId) {
@@ -23,7 +23,9 @@ function createFlexibleAlertCallback(context) {
                 console.log(`Perpetual alert ${alertId} triggered and active.`);
             }
         } catch (error) {
-            console.error('Error handling triggered alert:', error);
+            console.error('Error setting up alert:', error);
+            context.message.channel.send('There was an error setting up your alert. Please try again.')
+                .catch(err => console.error(`Failed to send error message to user ID: ${context.message.author.id}`, err));
         }
     }
 }

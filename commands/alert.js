@@ -1,6 +1,7 @@
 const { subscribeToPair } = require('../services/websocketService');
 const AlertModel = require('../database/alertModel');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
+const { createFlexibleAlertCallback } = require('../utils/callbackFactory');
 
 module.exports = {
     name: 'alert',
@@ -42,31 +43,18 @@ module.exports = {
                 .then(() => console.log(`Alert setup confirmation sent to user ID: ${message.author.id}`))
                 .catch(error => console.error(`Failed to send setup confirmation to user ID: ${message.author.id}`, error));
 
-           
-            subscribeToPair(formattedPair, alert.id, targetPrice, direction, alertType, async (newPrice) => {
-                console.log(`Alert triggered for ${formattedPair} at price: ${newPrice}`);
 
-                try {
-                    await AlertModel.triggerAlert(alert.id);
-
-                    if(alertType === 'standard'){
-                        await message.author.send(`Alert: ${formattedPair} has moved ${direction} your target price of ${targetPrice}. Current price: ${truncateToFiveDec(newPrice)}. Type: ${alertType}.`);
-                        console.log(`Alert ${alert.id} notification sent to the user.`);
-                        await AlertModel.deactivateAlert(alert.id, "Triggered");
-                        console.log(`Standard alert ${alert.id} deactivated.`);
-                    }else if (alertType === 'perpetual'){
-                        await message.author.send(`Alert: ${formattedPair} has crossed your target price of ${targetPrice}. Current price: ${truncateToFiveDec(newPrice)}. Type: ${alertType}.`);
-                        console.log(`Alert ${alert.id} notification sent to the user.`);
-                        console.log(`Perpetual alert ${alert.id} triggered and active.`);
-                    }
-                } catch (error) {
-                    console.error('Error handling triggered alert:', error);
-                }
-            });
-        } catch (error) {
+            subscribeToPair(formattedPair, alert.id, targetPrice, direction, alertType, createFlexibleAlertCallback({
+                formattedPair: formattedPair,
+                targetPrice: targetPrice,
+                direction: direction,
+                alertType: alertType,
+                message: message // Pass the Discord message object for user interaction
+            }));
+        } catch (error){
             console.error('Error setting up alert:', error);
-            message.channel.send('There was an error setting up your alert. Please try again.')
-                .catch(err => console.error(`Failed to send error message to user ID: ${message.author.id}`, err));
+            message.channel.send('There was an error setting up your alert. Please try again.');
         }
-    },
+
+    }
 };

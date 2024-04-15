@@ -21,14 +21,6 @@ monitization
 
 -BUGS-
 (Implementation reduce standard to s and perpetual to p arguments.) attempted but failed
-alerts that are curerntly in the database before app starts should also be triggered.
-
-What is the normal convention to save a user's current alerts in the case that the bot has to shut down?
-Is this just saved in the current alert database? And then rechecked or added to the subscribers' list when the bot reboots?
-How do you handle a situation like this, what is the normal convention?
-
-Is the websocket starting up on bot boot every time, or only started when an alert command is sent,
-and should this be active on boot and load all the active alerts in the subscriber list? How can this be handled at scale for multiple users?
 
 Add a timestamp in the response for the alert.
 
@@ -38,5 +30,5 @@ The show alerts should show a simplified timestamp for creation time as well as 
 
 
 -TESTING-
-test other pairs and different onse at the same time
+
 
