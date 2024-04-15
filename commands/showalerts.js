@@ -1,4 +1,5 @@
 const AlertModel = require('../database/alertModel'); // Adjust path as necessary
+const moment = require('moment');
 
 module.exports = {
     name: 'showalerts',
@@ -11,9 +12,11 @@ module.exports = {
                 return message.channel.send('You have no active alerts.');
             }
 
-            let response = 'Your active alerts:\n```\nID | Pair | Target Price | Direction | Status\n';
-            alerts.forEach(({ id, crypto_pair, target_price, direction, status }) => {
-                response += `${id} | ${crypto_pair} | ${target_price} | ${direction} | ${status}\n`;
+            let response = 'Your active alerts:\n```\nID | Pair | Target Price | Direction | Type | Status | Created At\n';
+            alerts.forEach(({ id, crypto_pair, target_price, direction, alert_type, status, creation_date }) => {
+                // Format creation date using moment for simplified output
+                const formattedDate = moment(creation_date).format('YYYY-MM-DD HH:mm:ss');
+                response += `${id} | ${crypto_pair} | ${target_price} | ${direction} | ${alert_type} | ${status} | ${formattedDate}\n`;
             });
             response += '```';
 

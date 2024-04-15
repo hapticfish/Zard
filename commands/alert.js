@@ -49,7 +49,8 @@ module.exports = {
                 targetPrice: targetPrice,
                 direction: direction,
                 alertType: alertType,
-                message: message // Pass the Discord message object for user interaction
+                message: message, // Pass the Discord message object for user interaction
+                timestamp: () => new Date().toISOString()
             }));
         } catch (error){
             console.error('Error setting up alert:', error);

@@ -1,20 +1,35 @@
 
 -IMPLEMENTATION-
 Sentiment Analysis
-    scan existing chats from all channels accepted in discords
-    call to display current ananlysis
-    other functions
+    -scan existing chats from all channels accepted in discords
+    -call to display current ananlysis
+    -other functions
 
-    Should show graphics charts for anaylis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
-    Indivigual analysis for discord chat analysis and twitter and an overal agragate
+    -Should show graphics charts for anaylis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
+    -Indivigual analysis for discord chat analysis and twitter and an overal agragate
 
-update database sentiment analysis feilds
+Add Twitter implamentation
+    -scanning tweets for sentiment
+    -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
+
+update database for sentiment analysis feilds
+
+User Profiles (create disclosure and consent for use (Opt out option cerntain features disabled))
+    Prefered Language
+    Notification preference
+    user role/permissions
+    usage statistics (create database for this)
+    feedback and sugestions (create databse for this)
+    Activity time frames
+
+enable SSL certificate and pay it
+
 
 monitization
-    find suttle effective way for adds and affiliates
-    afiliate links inteligently
-    reference links for PrimeXBT and other exchanges
-    website with merchandise
+    -find suttle effective way for adds and affiliates
+    -afiliate links inteligently
+    -reference links for PrimeXBT and other exchanges
+    -website with merchandise
         will need database for monitization (must desgin it and model it)
 
 
@@ -22,11 +37,15 @@ monitization
 -BUGS-
 (Implementation reduce standard to s and perpetual to p arguments.) attempted but failed
 
-Add a timestamp in the response for the alert.
+-disable time feature for messages as unable to get user timezone
+    else create user prifiles, collect data and use for other features, user name, user time zone, user preferences
 
-There needs to be a timestamp in the message response to the user when the alert is triggered.
 
-The show alerts should show a simplified timestamp for creation time as well as the type of alert.
+-use alternative to binance for btc and alts due to reginal blocking. coingeko? and notify them for advertizement
+
+Add a timestamp in the response for the alert. (Implamented Awaiting Testing)
+
+The show alerts should show a simplified timestamp for creation time as well as the type of alert. (implamented Awaiting Testing)
 
 
 -TESTING-
