@@ -103,11 +103,15 @@ function logActiveAlerts(pair, currentPrice) {
 }
 
 async function initAlerts() {
-    console.log('Initializing alerts...');
-    const activeAlerts = await AlertModel.getAllActiveAlerts(); // This method needs to be implemented in AlertModel
-    activeAlerts.forEach(alert => {
-        subscribeToPair(alert.crypto_pair, alert.id, alert.target_price, alert.direction, alert.alert_type, alertCallback);
-    });
+    try {
+        const activeAlerts = await AlertModel.getAllActiveAlerts();
+        activeAlerts.forEach(alert => {
+            subscribeToPair(alert.crypto_pair, alert.id, alert.target_price, alert.direction, alert.alert_type, alertCallback);
+        });
+        console.log('Alerts initialized successfully.');
+    } catch (error) {
+        console.error('Failed to initialize alerts:', error);
+    }
 }
 
 

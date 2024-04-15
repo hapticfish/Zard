@@ -56,6 +56,21 @@ const AlertModel = {
         }
     },
 
+    async getAllActiveAlerts() {
+        console.log("Fetching all active alerts...");
+        const query = `
+        SELECT * FROM alerts WHERE status = 'Active';
+    `;
+        try {
+            const { rows } = await pool.query(query);
+            console.log("Active alerts fetched successfully.");
+            return rows;
+        } catch (err) {
+            console.error('Error fetching all active alerts:', err.message);
+            throw err;
+        }
+    },
+
     async getActiveAlerts(userId) {
         console.log(`Retrieving active alerts for User ID=${userId}`);
         const query = `SELECT id, crypto_pair, target_price, direction, status, creation_date, alert_type FROM alerts WHERE user_id = $1 AND status = 'Active'`;
@@ -130,15 +145,6 @@ const AlertModel = {
             throw err; // Or handle this error as you see fit
         }
     }
-
-
-
 };
 
 module.exports = AlertModel;
-
-/*todo
-* modle deleteAllAlerts on deactivate alert
-*
-*
-* */
