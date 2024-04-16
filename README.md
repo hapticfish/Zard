@@ -16,7 +16,7 @@ Zard is a versatile Discord bot designed for cryptocurrency traders and financia
 
 ## Installation Instructions
 1. **Add Zard to Your Server**:
-   - Use the invitation link [Insert Bot Invite Link Here].
+   - Use the invitation link https://discord.com/oauth2/authorize?client_id=1206757046897344582
    - Select the server for Zard.
    - Approve the required permissions.
 
