@@ -14,7 +14,14 @@ module.exports = {
             return message.channel.send('Usage: !alert <crypto_pair> <direction> <target_price> <alert_type>');
         }
 
-        const [cryptoPair, direction, targetPriceInput, alertType] = args;
+        const [cryptoPair, directionInput, targetPriceInput, alertTypeInput] = args;
+        const directionMap = {'a': 'above', 'b': 'below' };
+        const alertTypeMap = {'s':'standard', 'p':'perpetual'};
+
+        // Convert simplified input to full-length if it exists in the map, otherwise keep the original
+        const direction = directionMap[directionInput.toLowerCase()] || directionInput;
+        const alertType = alertTypeMap[alertTypeInput.toLowerCase()] || alertTypeInput;
+
         if (!["above", "below"].includes(direction)) {
             console.log('Invalid direction argument for alert command.');
             return message.channel.send('Direction must be either "above" or "below".');
