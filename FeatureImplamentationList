@@ -1,6 +1,12 @@
 
 -IMPLEMENTATION-
-Sentiment Analysis
+
+-implement 4h opening and 1 hour opening notifications
+    Add working notification for 25% and 10% time before opening
+
+-implement the warning notification feature 25 and 10 percent for mo command enable/disable
+
+-Sentiment Analysis
     -scan existing chats from all channels accepted in discords
     -call to display current analysis
     -other functions
@@ -8,7 +14,7 @@ Sentiment Analysis
     -Should show graphics charts for analysis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
     -Individual analysis for discord chat analysis and twitter and an overall aggregate
 
-Add Twitter implementation
+-Add Twitter implementation
     -scanning tweets for sentiment
     -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
 
@@ -51,12 +57,9 @@ monetization
 -disable time feature for messages as unable to get user timezone
     else create user prifiles, collect data and use for other features, user name, user time zone, user preferences
 
+-Add a timestamp in the response for the alert. remove reagonal feature not possible
 
--use alternative to binance for btc and alts due to reginal blocking. coingeko? and notify them for advertizement
-
-Add a timestamp in the response for the alert. remove reagonal feature not possible
-
-The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
+-The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
 
 
 -TESTING-
