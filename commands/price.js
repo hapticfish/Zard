@@ -5,10 +5,15 @@ async function fetchWithLogging(url, exchange) {
     const fetch = (await import('node-fetch')).default;
     console.log(`Requesting data from ${exchange}: ${url}`);
     const response = await fetch(url);
-    console.log(`${exchange} response status: ${response.status}`);
+
+    // Check for a 451 status code, indicating restricted region access
+    if (response.status === 451) {
+        throw new Error('451: Restricted Region');
+    }
+
     const data = await response.json();
     console.log(`${exchange} raw data: `, JSON.stringify(data));
-    return data;
+    return { exchange, data, status: response.status }; // Include status in return value
 }
 
 module.exports = {
@@ -34,27 +39,37 @@ module.exports = {
 
         try {
             const responses = await Promise.all(Object.entries(apiUrls).map(async ([exchange, url]) => {
-                return fetchWithLogging(url, exchange).then(data => ({ exchange, data }));
+                return fetchWithLogging(url, exchange);
             }));
 
-            responses.forEach(({ exchange, data }) => {
-                let priceMessage = '';
-                switch (exchange) {
-                    case 'BINANCE':
-                        priceMessage = data.symbol ? `${data.symbol} Binance ${truncateToFiveDec(data.price)}` : 'Binance: Symbol not found/error fetching price.';
-                        break;
-                    case 'COINBASE':
-                        priceMessage = data.data ? `${data.data.base}-${data.data.currency} Coinbase ${truncateToFiveDec(data.data.amount)}` : 'Coinbase: Symbol not found/error fetching price.';
-                        break;
-                    case 'MEXC':
-                        priceMessage = (data.data && data.data.length > 0) ? `${data.data[0].symbol} MEXC ${truncateToFiveDec(data.data[0].last)}` : 'MEXC: Symbol not found/error fetching price.';
-                        break;
+            responses.forEach(({ exchange, data, status }) => {
+                // Handle the specific case of a 451 status code
+                if (status === 451) {
+                    message.channel.send('Failed: restricted region access');
+                } else {
+                    let priceMessage = '';
+                    switch (exchange) {
+                        case 'BINANCE':
+                            priceMessage = data.symbol ? `${data.symbol} Binance ${truncateToFiveDec(data.price)}` : 'Binance: Symbol not found/error fetching price.';
+                            break;
+                        case 'COINBASE':
+                            priceMessage = data.data ? `${data.data.base}-${data.data.currency} Coinbase ${truncateToFiveDec(data.data.amount)}` : 'Coinbase: Symbol not found/error fetching price.';
+                            break;
+                        case 'MEXC':
+                            priceMessage = (data.data && data.data.length > 0) ? `${data.data[0].symbol} MEXC ${truncateToFiveDec(data.data[0].last)}` : 'MEXC: Symbol not found/error fetching price.';
+                            break;
+                    }
+                    message.channel.send(priceMessage);
                 }
-                message.channel.send(priceMessage);
             });
         } catch (error) {
             console.error(error);
-            message.channel.send('There was an error fetching the cryptocurrency prices.');
+            // Provide a specific message for the 451 error
+            if (error.message.includes('451')) {
+                message.channel.send('Failed: restricted region access');
+            } else {
+                message.channel.send('There was an error fetching the cryptocurrency prices.');
+            }
         }
     },
 };

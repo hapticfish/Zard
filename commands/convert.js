@@ -15,11 +15,9 @@ module.exports = {
             return message.channel.send('Please provide a valid amount for conversion.');
         }
 
-        // Avoid appending "USDT" to "USDT" for either currency
         const fromPairSymbol = fromCurrency === 'USDT' ? 'USDT' : fromCurrency + 'USDT';
         const toPairSymbol = toCurrency === 'USDT' ? 'USDT' : toCurrency + 'USDT';
 
-        // Dynamically import node-fetch
         let fetch;
         try {
             fetch = (await import('node-fetch')).default;
@@ -29,38 +27,37 @@ module.exports = {
         }
 
         try {
-            // Fetch price for the fromCurrency to USDT (if fromCurrency is not USDT)
             let convertedAmount = amount;
             if (fromCurrency !== 'USDT') {
-                const apiUrlFrom = `https://api.binance.com/api/v3/ticker/price?symbol=${fromPairSymbol}`;
-                const responseFrom = await fetch(apiUrlFrom).then(res => res.json());
-
+                const responseFrom = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${fromPairSymbol}`).then(res => res.json());
                 if (!responseFrom.price) {
+                    if (responseFrom.status === 451) {
+                        return message.channel.send('Failed: restricted region access');
+                    }
                     return message.channel.send(`Could not fetch price for conversion from ${fromCurrency} to USDT.`);
                 }
-
-                const conversionRateFrom = parseFloat(responseFrom.price);
-                convertedAmount *= conversionRateFrom;
+                convertedAmount *= parseFloat(responseFrom.price);
             }
 
-            // Convert USDT to toCurrency (if toCurrency is not USDT)
             if (toCurrency !== 'USDT') {
-                const apiUrlTo = `https://api.binance.com/api/v3/ticker/price?symbol=${toPairSymbol}`;
-                const responseTo = await fetch(apiUrlTo).then(res => res.json());
-
+                const responseTo = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${toPairSymbol}`).then(res => res.json());
                 if (!responseTo.price) {
+                    if (responseTo.status === 451) {
+                        return message.channel.send('Failed: restricted region access');
+                    }
                     return message.channel.send(`Could not fetch price for conversion from USDT to ${toCurrency}.`);
                 }
-
-                const conversionRateTo = 1 / parseFloat(responseTo.price);
-                convertedAmount *= conversionRateTo;
+                convertedAmount *= 1 / parseFloat(responseTo.price);
             }
 
-            // Send the conversion result to the Discord channel
-            message.channel.send(`${amount} ${args[1].toUpperCase()} is equivalent to ${convertedAmount.toFixed(5)} ${args[2].toUpperCase()}.`);
+            message.channel.send(`${amount} ${fromCurrency} is equivalent to ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}.`);
         } catch (error) {
             console.error('Error fetching the conversion rate:', error);
-            message.channel.send('There was an error fetching the conversion rate.');
+            if (error.message && error.message.includes('451')) {
+                message.channel.send('Failed: restricted region access');
+            } else {
+                message.channel.send('There was an error fetching the conversion rate.');
+            }
         }
     },
 };

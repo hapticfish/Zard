@@ -1,4 +1,6 @@
 require('dotenv').config();
+
+
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const client = new Client({
     intents: [
@@ -10,8 +12,9 @@ const client = new Client({
     ]
 });
 
-
+const { pool } = require('./database/index'); // ensure the path is correct
 const fs = require('fs');
+const {initAlerts} = require("./services/websocketService");
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -21,8 +24,18 @@ for (const file of commandFiles){
     console.log(`Loading command ${command.name}`);
 }
 
-client.once('ready', () => {
+client.once('ready', async () => {
     console.log('Ready!');
+    try {
+        // Verify database connection before initializing alerts
+        const res = await pool.query('SELECT NOW()'); // Simple query to check database responsiveness
+        console.log('Database connection time:', res.rows[0].now);
+        await initAlerts();
+        console.log('Alerts initialized successfully.');
+    } catch (error) {
+        console.error('Failed to initialize alerts or database error:', error);
+    }
+
 });
 
 client.on('messageCreate', message => {

@@ -1,3 +1,14 @@
+
+// const fetch = require('node-fetch');
+// Dynamically import node-fetch as an ES Module
+async function fetchData(url) {
+    const { default: fetch } = await import('node-fetch');
+    const response = await fetch(url);
+    const data = await response.json();
+    return data;
+}
+
+
 function formatPairForAllExchanges(normalizedPair) {
     const formatRules = {
         'BINANCE': pair => pair,
@@ -16,7 +27,22 @@ function truncateToFiveDec(num) {
     return Math.floor(num * 100000) / 100000;
 }
 
+async function fetchMarketData(symbol) {
+    const url = `https://api.binance.com/api/v3/ticker/24hr?symbol=${symbol.toUpperCase()}`;
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Error fetching market data for ${symbol}`);
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
 module.exports = {
     formatPairForAllExchanges,
-    truncateToFiveDec
+    truncateToFiveDec,
+    fetchMarketData,
+    fetchData
 };
