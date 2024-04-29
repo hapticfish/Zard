@@ -1,0 +1,39 @@
+/my_project/
+│
+├── app/                    # Application specific modules
+│   ├── __init__.py         # Makes app a Python package
+│   ├── main.py             # Entry point for the FastAPI application
+│   ├── dependencies.py     # Dependency injection and utilities
+│   ├── models.py           # Pydantic models for request & response objects
+│   ├── schemas.py          # Database schemas and Pydantic models
+│
+├── kafka_consumer/         # Kafka consumers handling
+│   ├── __init__.py
+│   ├── consumer.py         # Kafka consumer setup and management
+│
+├── services/               # Business logic and service layer
+│   ├── __init__.py
+│   ├── sentiment_analysis.py  # Sentiment analysis functionality
+│   ├── data_processor.py      # Data cleaning and processing
+│
+├── db/                     # Database related modules
+│   ├── __init__.py
+│   ├── database.py         # Database connection and session management
+│   ├── crud.py             # CRUD operations (create, read, update, delete)
+│   ├── models.py           # SQLAlchemy models
+│
+├── tests/                  # Test suites
+│   ├── __init__.py
+│   ├── test_main.py        # Tests for main application routes
+│   ├── test_services.py    # Tests for service logic
+│
+├── config/                 # Configuration files
+│   ├── __init__.py
+│   ├── settings.py         # Configuration settings and environment variables
+│
+├── logs/                   # Log files
+│   ├── app.log
+│
+├── README.md               # Project overview and instructions
+├── requirements.txt        # Project dependencies
+└── .env                    # Environment variables file
