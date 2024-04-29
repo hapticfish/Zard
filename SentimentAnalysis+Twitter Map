@@ -1,0 +1,57 @@
+
+discord sentiment/Twitter integration details
+    Senti command (!senti <timeFrame>)
+
+Twitter implementation
+    news notification feature
+        filter key words for msg to users who subscribe
+
+    process prefilter and pass all twitter data to python back end
+
+Sentiment Analysis
+    processed in python
+    fed in  live with apatche kafka queues from javascript live
+
+    allow weighted average for prominent accounts (how to fingure out how much weight for more wheighted accounts or other things
+    and how to have the model or anayalis part recognize this and use it properly in anaylysis)
+
+    Utilizing Apache Kafka for live stream data from discord and twitter to the python senti process
+
+    How to ensure messages hold context to other messages close in the conversation chain ( 2 people taling
+    about somthing and one response doesnt make sence with out assoicated context of other messages)
+
+    use asychronose abitlies to save raw data and assocate what micro batch raw data is associated with
+    that was proccessed live
+
+    use a micro batching scheme by time frame window or size window (time size is better
+    as incoming data is variable in number and frequncy)
+
+    find way to agragate the the batched results into timeframe spesific analysis.
+
+    sentimenet granualarity (extreamly bearish, bearish, slightly bearish, neutral, slightly bullish, bullish, extreamly bullish)
+
+    make more recent analysis have more weight
+
+    sentiment_trend feild
+        calculated by comparing current senti score w/ previous scores over defined peropod
+        or after certian events (trending up overperiod = increasing)
+
+    Time windowed batching of data
+
+    intagration of subscribed discord channel text blocks
+
+    Multiple time frames
+        1min (data restrictive)
+        5min (data restrictive)
+        15min (data restrictive)
+        1hr (data restrictive)
+        4hr (data restrictive)
+        daily
+        weekly
+        monthly
+        yearly
+
+Database Handling
+    Data saved to relational db post analysis
+
+    user profile details collected with and filled by provided discord poll or button clicking emojis possibly

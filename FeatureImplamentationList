@@ -4,7 +4,50 @@
 -implement 4h opening and 1 hour opening notifications
     Add working notification for 25% and 10% time before opening
 
+-find way to add/record user to database even if they are not subscribed as paid
+    in this case would record...
+        last sentiment check
+        account)_type
+        adverage active times
+
+-for database user_profiles add/change
+    most_active_tf = most active time frames calculated activly updated
+    clarify/rename 'active_status' as sub_active_status
+    add ServerID as column
+    Roles held
+    host join date
+    status
+
+-create the following tables for data collection
+    Command table
+        CommandID
+        CommandName
+        Description
+        Others possibly
+
+    CommandUsage table (must be indexed and partioned)
+        UsageID
+        UserID
+        CommandID
+        Timestamp
+        ServerID (what server this instance is from)
+
+    Server table
+        ServerID
+        Server Name
+        Server Icon
+        Region
+        Verification Lvl
+        num_users (how to keep udpated?)
+
+
+-migrate all or most commands to dm and also main channel
+
 -implement the warning notification feature 25 and 10 percent for mo command enable/disable
+
+-update hello (make hello and help the same)
+
+-add command tracking (what command used, how offten in what time frame and dates, what areguments, ect)
 
 -Sentiment Analysis
     -scan existing chats from all channels accepted in discords
@@ -53,6 +96,11 @@ monetization
 
 
 -BUGS-
+-price is broken
+
+-optimize processing speed for blockT
+
+
 
 -disable time feature for messages as unable to get user timezone
     else create user prifiles, collect data and use for other features, user name, user time zone, user preferences
