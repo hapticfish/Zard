@@ -10,7 +10,18 @@ BUFFER = []
 BUFFER_LIMIT = 100
 
 
-async def create_sentiment_result(session: AsyncSession, data):
+"""
+#todo implament writing sentiment results data to the database (might need to find out how long anaylsys
+#todo takes to see if quising coroutine nonblocking queue's are nessiary action
+-see if anyother database writes can use the nonblockign queue feature
+-make sure that all functions and streams are started at start up
+-start implamenting senti design and cleaning and data preping
+-?should the results from senti be served imidiatly back to javascript or quesryd from database to javascript?
+-
+
+"""
+
+async def async_insert_sentiment_results(session: AsyncSession, data):
     query = SentimentResult.insert().values(**data)
     await session.execute(insert(SentimentResult).values(**data))
 

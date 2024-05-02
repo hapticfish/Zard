@@ -12,6 +12,7 @@ from kafka.senti_batch_consumer import BatchConsumer
 from kafka.raw_data_consumer import raw_consume
 from db.crud import flush_buffer
 from db.database import database
+from services.sentiment_analysis import perform_sentiment_analysis  # Ensure this import
 
 app = FastAPI()
 
@@ -43,7 +44,7 @@ async def startup():
 
     # Initialize and start the batch data consumer for sentiment analysis
     batch_consumer = BatchConsumer('batched_data_topic', )
-    batch_consumer_task = asyncio.create_task(batch_consumer.consume_messages())
+    batch_consumer_task = asyncio.create_task(batch_consumer.consume_messages(perform_sentiment_analysis))
 
 
 @app.on_event("shutdown")
