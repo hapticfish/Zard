@@ -2,6 +2,7 @@ import asyncio
 from typing import List
 import json
 from kafka.senti_batch_consumer import BatchConsumer
+from db.queue_manager import enqueue_data_for_db
 
 
 async def perform_sentiment_analysis(batch_data: List[dict]):
@@ -27,6 +28,8 @@ async def perform_sentiment_analysis(batch_data: List[dict]):
         print(f"Processed {len(results)} items with sentiment analysis.")
         # Implement any post-processing like saving to a database here
         # await save_results_to_database(results)
+        await enqueue_data_for_db('async_insert_sentiment_results', results)
+
     except Exception as e:
         print(f"Error during sentiment analysis: {str(e)}")
 

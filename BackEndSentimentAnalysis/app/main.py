@@ -26,12 +26,13 @@ AsyncSessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_
 raw_consumer_task = None
 batch_producer_task = None
 batch_consumer_task = None
+db_consumer_task = None
 
 
 # Application event handlers
 @app.on_event("startup")
 async def startup():
-    global raw_consumer_task, batch_producer_task, batch_consumer_task
+    global raw_consumer_task, batch_producer_task, batch_consumer_task, db_consumer_task
     batch_manager = await start_batch_manager()
     await database.connect()
     await batch_manager.start_batching_process()
@@ -46,32 +47,23 @@ async def startup():
     batch_consumer = BatchConsumer('batched_data_topic', )
     batch_consumer_task = asyncio.create_task(batch_consumer.consume_messages(perform_sentiment_analysis))
 
+    # Start the db_consumer
+    db_consumer_task = asyncio.create_task(db_consumer(async_engine))
+
 
 @app.on_event("shutdown")
 async def shutdown():
     await database.disconnect()
-    if raw_consumer_task:
-        raw_consumer_task.cancel()
-        try:
-            await raw_consumer_task
-        except asyncio.CancelledError:
-            print("Consumer task canceled.")
+    tasks = [raw_consumer_task, batch_producer_task, batch_consumer_task, db_consumer_task]
+    for task in tasks:
+        if task:
+            task.cancel()
+            try:
+                await task
+            except asyncio.CancelledError:
+                print(f"{task.get_name()} task canceled.")
 
-    if batch_producer_task:
-        batch_producer_task.cancel()
-        try:
-            await batch_producer_task
-        except asyncio.CancelledError:
-            print("Batch producer task canceled.")
-
-    if batch_consumer_task:
-        batch_consumer_task.cancel()
-        try:
-            await batch_consumer_task
-        except asyncio.CancelledError:
-            print("Batch consumer task canceled.")
-
-    async with AsyncSessionLocal() as session:  # Create a session to flush any remaining buffered data
+    async with AsyncSessionLocal() as session:
         await flush_buffer(session)
 
 
