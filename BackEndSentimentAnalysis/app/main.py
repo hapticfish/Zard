@@ -1,65 +1,78 @@
 from fastapi import FastAPI
 import uvicorn
-from aiokafka import AIOKafkaConsumer
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-
-from db.crud import flush_buffer
-from db.database import database
 from dotenv import load_dotenv
 import asyncio
-import json
 import os
+
+from services.batch_manager import start_batch_manager
+from kafka.senti_batch_producer import BatchProducer
+from kafka.senti_batch_consumer import BatchConsumer
+from kafka.raw_data_consumer import raw_consume
+from db.crud import flush_buffer
+from db.database import database
 
 app = FastAPI()
 
-# Load environment variables from .env file at the start of the app
+# Load environment variables
 load_dotenv()
 
-async_engine = create_async_engine("postgresql+asyncpg://user:password@localhost/dbname")
+# Create the asynchronous engine and session maker
+async_engine = create_async_engine(os.getenv('DATABASE_URL'))
 AsyncSessionLocal = sessionmaker(bind=async_engine, class_=AsyncSession, expire_on_commit=False)
 
-# Async function to consume Kafka messages
-async def consume():
-    consumer = AIOKafkaConsumer(
-        'redditSentiment',
-        'twitterPosts',
-        bootstrap_servers=os.getenv('KAFKA_BROKERS', 'kafka1:9092,kafka2:9092'),
-        group_id=os.getenv('KAFKA_GROUP_ID', 'my-consumer-group')
-    )
-    await consumer.start()
-    try:
-        async for msg in consumer:
-            message = json.loads(msg.value)
-            print(f"Received: {message}")
-            # Process the message and save results (consider using a separate module)
-            await save_sentiment_analysis_results(message)
-    finally:
-        await consumer.stop()
+raw_consumer_task = None
+batch_producer_task = None
+batch_consumer_task = None
 
-# Placeholder for saving sentiment analysis results, should be moved to a proper CRUD module
-async def save_sentiment_analysis_results(data):
-    query = """
-    INSERT INTO sentiment_results (batch_id, time_frame, sentiment_score, analysis_time, calculation_duration, request_count, topic_keywords, sentiment_trend)
-    VALUES (:batch_id, :time_frame, :sentiment_score, :analysis_time, :calculation_duration, :request_count, :topic_keywords, :sentiment_trend)
-    """
-    await database.execute(query, values=data)
 
 # Application event handlers
 @app.on_event("startup")
 async def startup():
+    global raw_consumer_task, batch_producer_task, batch_consumer_task
+    batch_manager = await start_batch_manager()
     await database.connect()
-    # Start Kafka consumer in the background
-    task = asyncio.create_task(consume())
-    await asyncio.sleep(1)  # Ensure the consumer starts
+    await batch_manager.start_batching_process()
+
+    raw_consumer_task = asyncio.create_task(raw_consume())  # Initialize and start the raw data consumer
+
+    # Initialize and start the batch data producer
+    batch_producer = BatchProducer('batched_data_topic')
+    batch_producer_task = asyncio.create_task(batch_producer.start())
+
+    # Initialize and start the batch data consumer for sentiment analysis
+    batch_consumer = BatchConsumer('batched_data_topic', )
+    batch_consumer_task = asyncio.create_task(batch_consumer.consume_messages())
+
 
 @app.on_event("shutdown")
 async def shutdown():
     await database.disconnect()
-    # Create a session to flush any remaining buffered data
-    async with AsyncSessionLocal() as session:
+    if raw_consumer_task:
+        raw_consumer_task.cancel()
+        try:
+            await raw_consumer_task
+        except asyncio.CancelledError:
+            print("Consumer task canceled.")
+
+    if batch_producer_task:
+        batch_producer_task.cancel()
+        try:
+            await batch_producer_task
+        except asyncio.CancelledError:
+            print("Batch producer task canceled.")
+
+    if batch_consumer_task:
+        batch_consumer_task.cancel()
+        try:
+            await batch_consumer_task
+        except asyncio.CancelledError:
+            print("Batch consumer task canceled.")
+
+    async with AsyncSessionLocal() as session:  # Create a session to flush any remaining buffered data
         await flush_buffer(session)
-    # Add logic to gracefully shut down the consumer if needed
+
 
 # Include API routers if any
 # from routers import some_router
