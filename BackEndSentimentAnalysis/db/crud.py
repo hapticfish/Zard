@@ -21,6 +21,7 @@ BUFFER_LIMIT = 100
 
 """
 
+
 async def async_insert_sentiment_results(session: AsyncSession, data):
     query = SentimentResult.insert().values(**data)
     await session.execute(insert(SentimentResult).values(**data))

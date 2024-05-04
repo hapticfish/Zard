@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import asyncio
 import os
 
+from db.queue_manager import db_consumer
 from services.batch_manager import start_batch_manager
 from kafka.senti_batch_producer import BatchProducer
 from kafka.senti_batch_consumer import BatchConsumer
