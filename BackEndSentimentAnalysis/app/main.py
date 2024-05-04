@@ -78,4 +78,3 @@ if __name__ == "__main__":
 #todo design and implament sentiment analysis for finance
 #todo consolidate all database writes into queueing system
 #todo ensure all data models are correct for all writes
-#todo
