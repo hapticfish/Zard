@@ -44,7 +44,3 @@ class RawData(Base):
     post_score = Column(Float)
 
     # Other columns remain defined but are not typically written to directly from this part of the app
-
-
-class PreprocessedData:
-    pass

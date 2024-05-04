@@ -73,3 +73,9 @@ async def shutdown():
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+#todo design and implament sentiment analysis for finance
+#todo consolidate all database writes into queueing system
+#todo ensure all data models are correct for all writes
+#todo
