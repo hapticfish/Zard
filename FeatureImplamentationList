@@ -8,7 +8,12 @@
     in this case would record...
         last sentiment check
         account)_type
-        adverage active times
+        average active times
+
+-implement bug/error/complaint/feedback form
+    utilize the ModelBuilder
+    this is for bugs and feed back else
+    probably create seaparate command for feedback and separate for bug reports.
 
 -for database user_profiles add/change
     most_active_tf = most active time frames calculated activly updated
@@ -43,9 +48,13 @@
 
 -migrate all or most commands to dm and also main channel
 
+-chart pattern identifyer, (send notification to subscribed user)
+
 -implement the warning notification feature 25 and 10 percent for mo command enable/disable
 
 -update hello (make hello and help the same)
+
+-add pooling feature for (issues, suggested features, custom extra)
 
 -add command tracking (what command used, how offten in what time frame and dates, what areguments, ect)
 
@@ -92,6 +101,7 @@ monetization
     -reference links for PrimeXBT and other exchanges
     -website with merchandise
         will need database for monetization (must design it and model it)
+    - have vairable pricing for testing which price make has the most subscribers
 
 
 

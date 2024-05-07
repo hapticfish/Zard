@@ -43,13 +43,11 @@ async def startup():
     # Initialize and start the batch data producer
     batch_producer = BatchProducer('batched_data_topic')
     batch_producer_task = asyncio.create_task(batch_producer.start())
-
+    # Start the db_consumer
+    db_consumer_task = asyncio.create_task(db_consumer(async_engine))
     # Initialize and start the batch data consumer for sentiment analysis
     batch_consumer = BatchConsumer('batched_data_topic', )
     batch_consumer_task = asyncio.create_task(batch_consumer.consume_messages(perform_sentiment_analysis))
-
-    # Start the db_consumer
-    db_consumer_task = asyncio.create_task(db_consumer(async_engine))
 
 
 @app.on_event("shutdown")
