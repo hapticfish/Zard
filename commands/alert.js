@@ -1,68 +1,57 @@
+// commands/alert.js
+const { SlashCommandBuilder } = require('@discordjs/builders');
 const { subscribeToPair } = require('../services/websocketService');
 const AlertModel = require('../database/alertModel');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
 const { createFlexibleAlertCallback } = require('../utils/callbackFactory');
 
 module.exports = {
-    name: 'alert',
-    execute: async (message, args) => {
-        console.log(`Alert command received with args: ${args.join(', ')}`);
-
-        // Adjusted for an additional argument for alert type
-        if (args.length < 4) {
-            console.log('Insufficient arguments for alert command.');
-            return message.channel.send('Usage: !alert <crypto_pair> <direction> <target_price> <alert_type>');
-        }
-
-        const [cryptoPair, directionInput, targetPriceInput, alertTypeInput] = args;
-        const directionMap = {'a': 'above', 'b': 'below' };
-        const alertTypeMap = {'s':'standard', 'p':'perpetual'};
-
-        // Convert simplified input to full-length if it exists in the map, otherwise keep the original
-        const direction = directionMap[directionInput.toLowerCase()] || directionInput;
-        const alertType = alertTypeMap[alertTypeInput.toLowerCase()] || alertTypeInput;
-
-        if (!["above", "below"].includes(direction)) {
-            console.log('Invalid direction argument for alert command.');
-            return message.channel.send('Direction must be either "above" or "below".');
-        }
-
-        // Ensuring the alertType is either "standard" or "perpetual"
-        if (!["standard", "perpetual"].includes(alertType)) {
-            console.log('Invalid alert type argument for alert command.');
-            return message.channel.send('Alert type must be either "s" for standard alert or "p" for perpetual alert.');
-        }
-
-        const targetPrice = parseFloat(targetPriceInput);
-        if (isNaN(targetPrice)) {
-            console.log('Invalid target price argument for alert command.');
-            return message.channel.send('Please provide a valid target price.');
-        }
+    data: new SlashCommandBuilder()
+        .setName('alert')
+        .setDescription('Set an alert for a cryptocurrency pair.')
+        .addStringOption(option =>
+            option.setName('crypto_pair')
+                .setDescription('The cryptocurrency pair (e.g., BTCUSDT)')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('direction')
+                .setDescription('Alert direction (above or below)')
+                .setRequired(true)
+                .addChoice('above', 'above')
+                .addChoice('below', 'below'))
+        .addNumberOption(option =>
+            option.setName('target_price')
+                .setDescription('Target price for the alert')
+                .setRequired(true))
+        .addStringOption(option =>
+            option.setName('alert_type')
+                .setDescription('Type of alert (standard or perpetual)')
+                .setRequired(true)
+                .addChoice('standard', 'standard')
+                .addChoice('perpetual', 'perpetual')),
+    async execute(interaction) {
+        const cryptoPair = interaction.options.getString('crypto_pair');
+        const direction = interaction.options.getString('direction');
+        const targetPrice = interaction.options.getNumber('target_price');
+        const alertType = interaction.options.getString('alert_type');
 
         const formattedPair = formatPairForAllExchanges(cryptoPair.replace(/[-\s]/g, '').toUpperCase()).BINANCE;
-        console.log(`Formatted pair: ${formattedPair}, Direction: ${direction}, Target Price: ${targetPrice}, Alert Type: ${alertType}`);
 
         try {
-            const alert = await AlertModel.addAlert(message.author.id, formattedPair, targetPrice, direction, alertType); // Passing alertType to addAlert
-            console.log(`Alert added to database:`, alert);
-
-            message.channel.send(`Alert set for ${formattedPair} when price goes ${direction} ${targetPrice}. Type: ${alertType}.`)
-                .then(() => console.log(`Alert setup confirmation sent to user ID: ${message.author.id}`))
-                .catch(error => console.error(`Failed to send setup confirmation to user ID: ${message.author.id}`, error));
-
+            const alert = await AlertModel.addAlert(interaction.user.id, formattedPair, targetPrice, direction, alertType);
+            await interaction.reply(`Alert set for ${formattedPair} when price goes ${direction} ${targetPrice}. Type: ${alertType}.`);
 
             subscribeToPair(formattedPair, alert.id, targetPrice, direction, alertType, createFlexibleAlertCallback({
                 formattedPair: formattedPair,
                 targetPrice: targetPrice,
                 direction: direction,
                 alertType: alertType,
-                message: message, // Pass the Discord message object for user interaction
+                interaction: interaction, // Pass the interaction object for user interaction
                 timestamp: () => new Date().toISOString()
             }));
-        } catch (error){
+        } catch (error) {
             console.error('Error setting up alert:', error);
-            message.channel.send('There was an error setting up your alert. Please try again.');
+            await interaction.reply('There was an error setting up your alert. Please try again.');
         }
-
     }
 };

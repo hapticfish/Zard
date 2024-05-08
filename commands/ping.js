@@ -1,9 +1,16 @@
+// commands/ping.js
+const { SlashCommandBuilder } = require('@discordjs/builders');
+
 module.exports = {
-    name: 'ping',
-    execute(message, args) {
-        console.log(`Message received: ${message.content}`); // Log every message received to debug
-        console.log('!ping command received'); // Confirm command is detected
-        message.channel.send('Pong!')
-            .then(() => console.log('Replied with Pong!'))
-            .catch(console.error); // Log any errors in sending the message
-}};
+    data: new SlashCommandBuilder()
+        .setName('ping')
+        .setDescription('Replies with Pong!'),
+    async execute(interaction) {
+        // Log the command and user details
+        console.log(`Slash command received: /${interaction.commandName} by ${interaction.user.tag}`);
+
+        // Reply to the interaction
+        await interaction.reply('Pong!');
+        console.log('Replied with Pong!');
+    }
+};

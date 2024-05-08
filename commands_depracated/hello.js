@@ -4,7 +4,7 @@ module.exports = {
 
         if(message.content === '!hello') {
             console.log('!hello received!'); // Confirm command is detected
-            // Send a DM to the user with the commands menu
+            // Send a DM to the user with the commands_depracated menu
             const commandsMenu = `
 Hello! I am your guide for all things crypto in this dangerous and strange world! Here are some commands you can use:
 
@@ -35,12 +35,12 @@ Hello! I am your guide for all things crypto in this dangerous and strange world
 What can I help you with today, Traveler?
         `;
             message.author.send(commandsMenu)
-                .then(() => console.log('Sent commands menu to user via DM.'))
+                .then(() => console.log('Sent commands_depracated menu to user via DM.'))
                 .catch(console.error); // Log any errors in sending the message
 
             // Optionally, confirm in the channel that a DM has been sent
             if (message.channel.type === 'GUILD_TEXT') { // Check if the message is from a server text channel
-                message.reply('I\'ve sent you a DM with all the commands! 📬')
+                message.reply('I\'ve sent you a DM with all the commands_depracated! 📬')
                     .catch(console.error); // Log any errors in replying to the message
             }
         }

@@ -16,11 +16,11 @@ const { pool } = require('./database/index'); // ensure the path is correct
 const fs = require('fs');
 const {initAlerts} = require("./services/websocketService");
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands_depracated').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles){
-    const command = require(`./commands/${file}`);
-    client.commands.set(command.name, command);
+    const command = require(`./commands_depracated/${file}`);
+    client.commands.set(command.name, command);  /*change   client.commands_depracated.set(command.data.name, command);  */
     console.log(`Loading command ${command.name}`);
 }
 
@@ -55,5 +55,21 @@ client.on('messageCreate', message => {
         message.reply('There was an error executing that command.');
     }
 });
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isCommand()) return;
+
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) return;
+
+    try {
+        await command.execute(interaction);
+    } catch (error) {
+        console.error(error);
+        await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+    }
+});
+
 
 client.login(process.env.DISCORD_TOKEN);

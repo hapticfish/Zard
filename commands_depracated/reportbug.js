@@ -1,7 +1,7 @@
 const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, Events } = require('discord.js');
 const reportingModel = require('../database/reportingModel');
 
-//todo migrate to slash commands for all commands
+//todo migrate to slash commands_depracated for all commands_depracated
 
 module.exports = {
     name: 'reportbug',
