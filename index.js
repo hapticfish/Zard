@@ -16,11 +16,11 @@ const { pool } = require('./database/index'); // ensure the path is correct
 const fs = require('fs');
 const {initAlerts} = require("./services/websocketService");
 client.commands = new Collection();
-const commandFiles = fs.readdirSync('./commands_depracated').filter(file => file.endsWith('.js'));
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles){
-    const command = require(`./commands_depracated/${file}`);
-    client.commands.set(command.name, command);  /*change   client.commands_depracated.set(command.data.name, command);  */
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.data.name, command); /*change   client.commands.set(command.data.name, command);  */
     console.log(`Loading command ${command.name}`);
 }
 
@@ -38,23 +38,6 @@ client.once('ready', async () => {
 
 });
 
-client.on('messageCreate', message => {
-    if (!message.content.startsWith('!') || message.author.bot) return;
-
-    const args = message.content.slice(1).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
-
-    if (!client.commands.has(commandName)) return;
-
-    const command = client.commands.get(commandName);
-
-    try {
-        command.execute(message, args);
-    } catch (error) {
-        console.error(error);
-        message.reply('There was an error executing that command.');
-    }
-});
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
@@ -70,6 +53,27 @@ client.on('interactionCreate', async interaction => {
         await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
     }
 });
+
+
+// client.on('messageCreate', message => {
+//     if (!message.content.startsWith('!') || message.author.bot) return;
+//
+//     const args = message.content.slice(1).trim().split(/ +/);
+//     const commandName = args.shift().toLowerCase();
+//
+//     if (!client.commands.has(commandName)) return;
+//
+//     const command = client.commands.get(commandName);
+//
+//     try {
+//         command.execute(message, args);
+//     } catch (error) {
+//         console.error(error);
+//         message.reply('There was an error executing that command.');
+//     }
+// });
+
+
 
 
 client.login(process.env.DISCORD_TOKEN);
