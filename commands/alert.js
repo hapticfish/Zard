@@ -17,8 +17,10 @@ module.exports = {
             option.setName('direction')
                 .setDescription('Alert direction (above or below)')
                 .setRequired(true)
-                .addChoice('above', 'above')
-                .addChoice('below', 'below'))
+                .addChoices(
+                    { name: 'Above', value: 'above' },
+                    { name: 'Below', value: 'below' }
+                ))
         .addNumberOption(option =>
             option.setName('target_price')
                 .setDescription('Target price for the alert')
@@ -27,8 +29,10 @@ module.exports = {
             option.setName('alert_type')
                 .setDescription('Type of alert (standard or perpetual)')
                 .setRequired(true)
-                .addChoice('standard', 'standard')
-                .addChoice('perpetual', 'perpetual')),
+                .addChoices(
+                    { name: 'Standard', value: 'standard' },
+                    { name: 'Perpetual', value: 'perpetual' }
+                )),
     async execute(interaction) {
         const cryptoPair = interaction.options.getString('crypto_pair');
         const direction = interaction.options.getString('direction');
