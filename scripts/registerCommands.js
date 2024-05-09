@@ -1,7 +1,9 @@
+require('dotenv').config({ path: '../.env' });
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
+const winston = require('winston');
 const { SlashCommandBuilder } = require('@discordjs/builders');
-require('dotenv').config();
+
 
 const commands = [
     new SlashCommandBuilder()
@@ -68,7 +70,7 @@ const commands = [
             option.setName('currency')
                 .setDescription('The currency to fetch fees for')
                 .setRequired(true)
-                .addChoices('Bitcoin', 'BTC')),
+                .addChoices({ name: 'Bitcoin', value: 'BTC' })),
     new SlashCommandBuilder()
         .setName('feedback')
         .setDescription('Submit a feedback form.'),
@@ -116,19 +118,43 @@ const commands = [
 ]
     .map(command => command.toJSON());
 
+// Configure Winston logger
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.json()
+    ),
+    transports: [
+        new winston.transports.Console({
+            format: winston.format.simple()
+        })
+    ]
+});
+
+// Helper function to mask sensitive information
+const maskToken = (token) => token.substr(token.length - 6);
+
+console.log("Using token:", process.env.DISCORD_TOKEN);
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
     try {
-        console.log('Started refreshing application-wide (/) commands.');
-
+        logger.info('Started refreshing application-wide (/) commands.', {
+            token: maskToken(process.env.DISCORD_TOKEN),
+            clientId: maskToken(process.env.DISCORD_CLIENT_ID)
+        });
         await rest.put(
+
             Routes.applicationCommands(process.env.DISCORD_CLIENT_ID),
             { body: commands },
         );
 
-        console.log('Successfully reloaded application-wide (/) commands.');
+        logger.info('Successfully reloaded application-wide (/) commands.');
     } catch (error) {
-        console.error('Failed to reload commands:', error);
+        logger.error('Failed to reload commands:', {
+            message: error.message,
+            stack: error.stack
+        });
     }
 })();
