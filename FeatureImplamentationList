@@ -113,6 +113,7 @@ monetization
 -alerts in second session appear to not be loading from previous session.
 -optimize processing speed for blockT
 -on start up loading command undefined
+-adding alerts appears to not persist in the list when restarted
 
 
 
