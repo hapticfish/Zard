@@ -110,8 +110,9 @@ monetization
 
 -BUGS-
 -price is broken
-
+-alerts in second session appear to not be loading from previous session.
 -optimize processing speed for blockT
+-on start up loading command undefined
 
 
 
