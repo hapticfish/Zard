@@ -10,6 +10,16 @@
         account)_type
         average active times
 
+-implement notification for when CME futures close and open
+    enable feature for use or disable feature
+    25% and 10% count down
+
+-Trading event notification enableor command
+    1h
+    4h
+    CME Futures
+    Market Opens and Closes
+
 -implement bug/error/complaint/feedback form
     utilize the ModelBuilder
     this is for bugs and feed back else
