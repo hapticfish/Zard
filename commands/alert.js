@@ -34,16 +34,29 @@ module.exports = {
                     { name: 'Perpetual', value: 'perpetual' }
                 )),
     async execute(interaction) {
-        const cryptoPair = interaction.options.getString('crypto_pair');
+        console.log(interaction); // Log the entire interaction object
+        console.log(interaction.options); // Log all the options received
+
+        const cryptoPair = interaction.options.getString('cryptopair');
         const direction = interaction.options.getString('direction');
-        const targetPrice = interaction.options.getNumber('target_price');
-        const alertType = interaction.options.getString('alert_type');
+        const targetPrice = interaction.options.getNumber('targetprice');
+        const alertType = interaction.options.getString('alerttype');
+
+        console.log(`cryptoPair: ${cryptoPair}, direction: ${direction}, targetPrice: ${targetPrice}, alertType: ${alertType}`);
+
+        // Now you can proceed with your existing logic using these variables
+        if (!cryptoPair || !direction || !targetPrice || !alertType) {
+            console.error('One or more options are missing');
+            await interaction.reply({ content: 'All options are required.', ephemeral: true });
+            return;
+        }
 
         const formattedPair = formatPairForAllExchanges(cryptoPair.replace(/[-\s]/g, '').toUpperCase()).BINANCE;
-
+        console.log(`The formatted Pair:`, formattedPair);
         try {
             const alert = await AlertModel.addAlert(interaction.user.id, formattedPair, targetPrice, direction, alertType);
-            await interaction.reply(`Alert set for ${formattedPair} when price goes ${direction} ${targetPrice}. Type: ${alertType}.`);
+            console.log(`Alert added: User ${interaction.user.id}, Pair ${formattedPair}, Price ${targetPrice}, Direction ${direction}, Type ${alertType}`);
+            await interaction.reply(`Alert set for ${formattedPair} ${direction} ${targetPrice}. Type: ${alertType}.`);
 
             subscribeToPair(formattedPair, alert.id, targetPrice, direction, alertType, createFlexibleAlertCallback({
                 formattedPair: formattedPair,
@@ -54,7 +67,7 @@ module.exports = {
                 timestamp: () => new Date().toISOString()
             }));
         } catch (error) {
-            console.error('Error setting up alert:', error);
+            console.error('Alert setup error:', { userId: interaction.user.id, error: error.message });
             await interaction.reply('There was an error setting up your alert. Please try again.');
         }
     }
