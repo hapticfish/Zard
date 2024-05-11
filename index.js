@@ -73,7 +73,7 @@ client.on('interactionCreate', async interaction => {
 //     }
 // });
 
-
+//todo CREATE USER PROFILES TO WORK WITH PROMPT FOR MODELS feedback and bug ect.
 
 
 client.login(process.env.DISCORD_TOKEN);

@@ -1,4 +1,5 @@
 const { metadataPool } = require('./index');
+const { pool } = require('./index');
 
 let metadataBuffer = [];
 const bufferLimit = 100;
@@ -36,4 +37,24 @@ async function bufferAndWriteMetadata(data) {
     }
 }
 
-module.exports = { bufferAndWriteMetadata };
+/**
+ * Checks if a user profile exists in the database.
+ * @param {string} userId - The user ID to check in the database.
+ * @returns {Promise<boolean>} - True if the user profile exists, false otherwise.
+ */
+async function checkUserProfileExists(userId) {
+    const query = `
+        SELECT 1
+        FROM user_profiles
+        WHERE user_id = $1;
+    `;
+    try {
+        const result = await pool.query(query, [userId]);
+        return result.rowCount > 0;
+    } catch (error) {
+        console.error(`Error checking user profile existence for user_id ${userId}:`, error);
+        throw error; // Optionally re-throw to handle elsewhere
+    }
+}
+
+module.exports = { bufferAndWriteMetadata, checkUserProfileExists};

@@ -22,22 +22,44 @@ const  reportingModel = {
 
 
 
-    async writeUserFeedback(userID, feedbackType, satRating,content, responseNeeded) {
-        console.log(`User Feedback received ${userID} ${feedbackType} ${satRating} ${content} ${responseNeeded} `);
+    async writeUserFeedback(userID, feedbackType, satRating, content, responseNeeded, interaction) {
+        console.log(`User Feedback received ${userID} ${feedbackType} ${satRating} ${content} ${responseNeeded}`);
+
+        // Check if the user exists in the user_profiles table
+        const userExistsQuery = `SELECT EXISTS (SELECT 1 FROM user_profiles WHERE user_id = $1)`;
+        try {
+            const userExistsResult = await pool.query(userExistsQuery, [userID]);
+            if (!userExistsResult.rows[0].exists) {
+                // User does not exist, prompt for registration
+                console.log(`No user profile found for user_id: ${userID}`);
+                await interaction.reply({ content: 'No user profile found. Please create a profile before submitting feedback.', ephemeral: true });
+                return; // Exit the function to prevent further execution
+            }
+        } catch (error) {
+            console.error('Error checking user existence:', error);
+            await interaction.reply({ content: 'Error checking user profile.', ephemeral: true });
+            return;
+        }
+
+        // Proceed with inserting the feedback into the database
         const query = `
-            INSERT INTO user_feedback (user_id, feedbackType, satRating, content, responseNeeded)
-            VALUES ($1, $2, $3, $4, $5)
-        `;
+        INSERT INTO user_feedback (user_id, feedback_type, satisfaction_rating, content, response_needed)
+        VALUES ($1, $2, $3, $4, $5)
+    `;
         const values = [userID, feedbackType, satRating, content, responseNeeded];
 
         try {
             await pool.query(query, values);
+            console.log('Feedback submitted successfully');
             await interaction.reply({ content: 'User Feedback submitted successfully!', ephemeral: true });
-        } catch (error) {
-            console.error('Database insertion error:', error);
+        } catch (dbError) {
+            console.error('Database insertion error:', dbError);
             await interaction.reply({ content: 'Failed to submit User Feedback.', ephemeral: true });
         }
-    },
+    }
+
+
+
 
 
 };
