@@ -40,23 +40,23 @@ module.exports = {
                 const averageMinutes = Math.floor(averageCompletionTimeInSeconds / 60);
                 const averageSeconds = averageCompletionTimeInSeconds % 60;
 
-                await interaction.editReply(`Average Completion Time for the last 10 blocks: ${averageMinutes} minutes and ${averageSeconds.toFixed(0)} seconds`);
+                let responseMessage = `Average Completion Time for the last 10 blocks of ${ticker}: ${averageMinutes} minutes and ${averageSeconds.toFixed(0)} seconds.\n\n`;
 
-                let completionTimesMessage = `Completion Times for the Last 3 Blocks of ${ticker}:\n`;
+                responseMessage += `Completion Times for the Last 3 Blocks of ${ticker}:\n`;
                 for (let i = 0; i < 3; i++) {
-                    const completionTimeInSeconds = blocks[i].time - blocks[i + 1].time;
+                    const completionTimeInSeconds = last10Blocks[i].time - last10Blocks[i + 1].time;
                     const minutes = Math.floor(completionTimeInSeconds / 60);
                     const seconds = completionTimeInSeconds % 60;
-                    completionTimesMessage += `Block ${blocks[i].height} to Block ${blocks[i + 1].height}: ${minutes} minutes and ${seconds.toFixed(0)} seconds\n`;
+                    responseMessage += `Block ${last10Blocks[i].height} to Block ${last10Blocks[i + 1].height}: ${minutes} minutes and ${seconds.toFixed(0)} seconds\n`;
                 }
-                await interaction.followUp(completionTimesMessage);
+                await interaction.editReply(responseMessage);
             } else {
                 console.log('Not enough blocks to calculate an average completion time.');
-                await interaction.reply('Not enough blocks to calculate an average completion time or completion times for the last 3 blocks.');
+                await interaction.editReply('Not enough blocks to calculate an average completion time or completion times for the last 3 blocks.');
             }
-        } catch ( error) {
+        } catch (error) {
             console.error('Error fetching block times:', error);
-            await interaction.reply('There was an error fetching the block times.');
+            await interaction.editReply('There was an error fetching the block times.');
         }
     }
 };
