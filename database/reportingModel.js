@@ -3,7 +3,7 @@ const { pool } = require('./index');
 const  reportingModel = {
 
 
-    async writeBugReport(userID, title, description, steps, severity) {
+    async writeBugReport(userID, title, description, steps, severity, interaction) {
         console.log(`Bug Report received ${userID} ${title} ${description} ${steps} ${severity}`);
         const query = `
             INSERT INTO bug_reports (user_id, title, description, steps_to_reproduce, severity)
