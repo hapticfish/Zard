@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // const fetch = require('node-fetch'); // Assuming 'node-fetch' is installed and can be required directly
 const { formatPairForAllExchanges } = require('../utils/currencyUtils');
+const commandUsageModel = require('../database/commandUsageModel'); // Import the command usage model
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -32,6 +33,7 @@ module.exports = {
         const toPairSymbol = toCurrency === 'USDT' ? 'USDT' : toCurrency + 'USDT';
 
         let fetch;
+        const startTime = Date.now(); // Start time for response time calculation
         try {
             fetch = (await import('node-fetch')).default;
             let convertedAmount = amount;
@@ -63,9 +65,46 @@ module.exports = {
 
             console.log(`Successfully processed convert command. Amount: ${amount} From Currency: ${fromCurrency}, Converted Amount: ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}`);
             await interaction.reply(`${amount} ${fromCurrency} is equivalent to ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}.`);
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Converts an amount from one cryptocurrency to another.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
         } catch (error) {
             console.error('Error fetching the conversion rate:', error);
             await interaction.reply('There was an error fetching the conversion rate.');
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log failed command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Converts an amount from one cryptocurrency to another.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
         }
     },
 };
