@@ -1,6 +1,11 @@
 
 -IMPLEMENTATION-
 
+-update all time stamps to reference user timezone
+-enable time feature for messages to get user timezone
+-Add a timestamp in the response for the alert. remove reagonal feature not possible
+-The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
+
 -implement 4h opening and 1 hour opening notifications
     Add working notification for 25% and 10% time before opening
 
@@ -19,11 +24,6 @@
     4h
     CME Futures
     Market Opens and Closes
-
--implement bug/error/complaint/feedback form
-    utilize the ModelBuilder
-    this is for bugs and feed back else
-    probably create seaparate command for feedback and separate for bug reports.
 
 -for database user_profiles add/change
     most_active_tf = most active time frames calculated activly updated
@@ -58,13 +58,11 @@
 
 -migrate all or most commands to dm and also main channel
 
--chart pattern identifyer, (send notification to subscribed user)
+-chart pattern identifier, (send notification to subscribed user)
 
 -implement the warning notification feature 25 and 10 percent for mo command enable/disable
 
 -update hello (make hello and help the same)
-
--add pooling feature for (issues, suggested features, custom extra)
 
 -add command tracking (what command used, how offten in what time frame and dates, what areguments, ect)
 
@@ -82,19 +80,9 @@
 
 update database for sentiment analysis fields
 
-User Profiles (create disclosure and consent for use (Opt out option certain features disabled))
-    Preferred Language
-    Notification preference
-    user role/permissions
-    usage statistics (create database for this)
-    feedback and suggestions (create database for this)
-    Activity time frames
-
 enable SSL certificate and pay it
 
 Enable versioning after launch
-
-Implement and migrate prefix commands, !, to slash commands for discord
 
 Complete Bot marketing and set up
     Set up Bot website
@@ -104,7 +92,6 @@ Complete Bot marketing and set up
     Enable 2FA
     Enable the 'Team' of Developers
     obtain bot verification (fill out form, ect)
-
 
 monetization
     -find settle effective way for adds and affiliates
@@ -117,22 +104,11 @@ monetization
     
 
 
-
 -BUGS-
 -update price slash command description to include btcusdt ,  ethusdt ect as examples
 -alerts in second session appear to not be loading from previous session.
 -optimize processing speed for blockT
--on start up loading command undefined
 -adding alerts appears to not persist in the list when restarted
-
-
-
--disable time feature for messages as unable to get user timezone
-    else create user prifiles, collect data and use for other features, user name, user time zone, user preferences
-
--Add a timestamp in the response for the alert. remove reagonal feature not possible
-
--The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
 
 
 -TESTING-
