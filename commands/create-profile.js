@@ -9,6 +9,8 @@ module.exports = {
 
     async execute(interaction) {
         console.log('Executing command to create profile...');
+        const startTime = Date.now();
+        interaction.client.startTime = startTime; // Store the start time in the client object
         try {
             const modal = new ModalBuilder()
                 .setCustomId('createUserProfile')

@@ -1,6 +1,9 @@
 const { Events } = require('discord.js');
 const userModel = require('../database/userModel');
 const reportingModel = require('../database/reportingModel');
+const { logCommandUsage } = require('../database/commandUsageModel');
+const { logUsage } = require('../utils/writeLogUsageHelper');
+
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -13,16 +16,17 @@ module.exports = {
 
 async function handleModalSubmit(interaction) {
     const customId = interaction.customId;
+    const startTime = interaction.client.startTime || Date.now();
 
     switch (customId) {
         case 'createUserProfile':
-            await handleCreateUserProfile(interaction);
+            await handleCreateUserProfile(interaction, startTime);
             break;
         case 'userFeedbackModal':
-            await handleUserFeedbackModal(interaction);
+            await handleUserFeedbackModal(interaction, startTime);
             break;
         case 'bugReportModal':
-            await handleBugReportModal(interaction);
+            await handleBugReportModal(interaction, startTime);
             break;
         default:
             console.warn('Unhandled modal submission:', customId);
@@ -30,7 +34,11 @@ async function handleModalSubmit(interaction) {
     }
 }
 
-async function handleCreateUserProfile(interaction) {
+async function handleCreateUserProfile(interaction, startTime) {
+    const commandName = 'create-profile';
+    const commandId = 'createUserProfile'; // Replace with actual command ID if available
+
+
     try {
         await interaction.deferReply({ ephemeral: true });
 
@@ -49,6 +57,9 @@ async function handleCreateUserProfile(interaction) {
         if (errors.length > 0) {
             console.log('Validation errors:', errors);
             await interaction.editReply({ content: `Please correct the following errors:\n- ${errors.join('\n- ')}` });
+
+            // Log failed command usage
+            await logUsage(interaction, false, errors.join(', '), startTime);
             return;
         }
 
@@ -56,13 +67,20 @@ async function handleCreateUserProfile(interaction) {
         await userModel.upsertUserProfile(interaction, userData);
         console.log('User profile updated successfully.');
         await interaction.editReply({ content: 'Your profile has been successfully updated!' });
+
+        // Log successful command usage
+        await logUsage(interaction, true, null, startTime);
     } catch (error) {
         console.error('Error during modal submission handling:', error);
         await interaction.editReply({ content: 'Failed to update your profile. Please try again later.' });
+
+        // Log failed command usage
+        await logUsage(interaction, false, error.message, startTime);
     }
 }
 
-async function handleUserFeedbackModal(interaction) {
+async function handleUserFeedbackModal(interaction, startTime) {
+
     try {
         await interaction.deferReply({ ephemeral: true });
 
@@ -74,13 +92,20 @@ async function handleUserFeedbackModal(interaction) {
 
         await reportingModel.writeUserFeedback(userID, feedbackType, satRating, content, responseNeeded, interaction);
         await interaction.editReply({ content: 'Thank you for your feedback!', ephemeral: true });
+
+        // Log successful modal submission
+        await logUsage(interaction, true, null, startTime);
+
     } catch (error) {
         console.error('Error handling feedback submission:', error);
         await interaction.editReply({ content: 'Failed to submit your feedback. Please try again later.', ephemeral: true });
+
+        // Log failed modal submission
+        await logUsage(interaction, false, error.message, startTime);
     }
 }
 
-async function handleBugReportModal(interaction) {
+async function handleBugReportModal(interaction, startTime) {
     try {
         await interaction.deferReply({ ephemeral: true });
 
@@ -92,9 +117,17 @@ async function handleBugReportModal(interaction) {
 
         await reportingModel.writeBugReport(userID, title, description, steps, severity, interaction);
         await interaction.editReply({ content: 'Bug report submitted successfully!', ephemeral: true });
+
+        // Log successful modal submission
+        await logUsage(interaction, true, null, startTime);
+
     } catch (error) {
         console.error('Error handling bug report submission:', error);
         await interaction.editReply({ content: 'Failed to submit your bug report. Please try again later.', ephemeral: true });
+
+        // Log failed modal submission
+        await logUsage(interaction, false, error.message, startTime);
+
     }
 }
 
