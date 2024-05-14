@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { loadFetch } = require('../utils/fetch');
+const commandUsageModel = require('../database/commandUsageModel'); // Import the command usage model
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -13,6 +14,8 @@ module.exports = {
         await interaction.deferReply();  // Defer the reply to have more than 3 seconds to respond
         const ticker = interaction.options.getString('ticker').toUpperCase();
         console.log(`[START] Execute function triggered for block-time with ticker: ${ticker}.`);
+
+        const startTime = Date.now(); // Start time for response time calculation
 
         try {
             const fetch = await loadFetch();
@@ -50,6 +53,25 @@ module.exports = {
                     responseMessage += `Block ${last10Blocks[i].height} to Block ${last10Blocks[i + 1].height}: ${minutes} minutes and ${seconds.toFixed(0)} seconds\n`;
                 }
                 await interaction.editReply(responseMessage);
+
+                const endTime = Date.now();
+                const responseTime = endTime - startTime;
+
+                // Log successful command usage
+                await commandUsageModel.logCommandUsage({
+                    userID: interaction.user.id,
+                    commandID: interaction.commandId,
+                    commandName: interaction.commandName,
+                    description: 'Shows average completion times for most recent blocks by currency.',
+                    timestamp: new Date(),
+                    guildID: interaction.guildId,
+                    channelID: interaction.channelId,
+                    parameters: JSON.stringify(interaction.options.data),
+                    success: true,
+                    errorCode: null,
+                    responseTime: responseTime
+                });
+
             } else {
                 console.log('Not enough blocks to calculate an average completion time.');
                 await interaction.editReply('Not enough blocks to calculate an average completion time or completion times for the last 3 blocks.');
@@ -57,6 +79,24 @@ module.exports = {
         } catch (error) {
             console.error('Error fetching block times:', error);
             await interaction.editReply('There was an error fetching the block times.');
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log failed command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Shows average completion times for most recent blocks by currency.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
         }
     }
 };

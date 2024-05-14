@@ -4,6 +4,7 @@ const { subscribeToPair } = require('../services/websocketService');
 const AlertModel = require('../database/alertModel');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
 const { createFlexibleAlertCallback } = require('../utils/callbackFactory');
+const { logCommandUsage } = require('../database/commandUsageModel');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -53,6 +54,8 @@ module.exports = {
 
         const formattedPair = formatPairForAllExchanges(cryptoPair.replace(/[-\s]/g, '').toUpperCase()).BINANCE;
         console.log(`The formatted Pair:`, formattedPair);
+        const startTime = Date.now();
+
         try {
             const alert = await AlertModel.addAlert(interaction.user.id, formattedPair, targetPrice, direction, alertType);
             console.log(`Alert added: User ${interaction.user.id}, Pair ${formattedPair}, Price ${targetPrice}, Direction ${direction}, Type ${alertType}`);
@@ -66,9 +69,46 @@ module.exports = {
                 interaction: interaction, // Pass the interaction object for user interaction
                 timestamp: () => new Date().toISOString()
             }));
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId, // You might need to define or derive this
+                commandName: interaction.commandName,
+                description: 'Set an alert for a cryptocurrency pair',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data), // Assuming interaction.options.data contains command parameters
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
         } catch (error) {
             console.error('Alert setup error:', { userId: interaction.user.id, error: error.message });
             await interaction.reply('There was an error setting up your alert. Please try again.');
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log failed command usage
+            await logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Set an alert for a cryptocurrency pair',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
         }
     }
 };

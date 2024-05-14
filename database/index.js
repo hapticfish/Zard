@@ -5,7 +5,7 @@ const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 10, // Lower number of maximum connections
     idleTimeoutMillis: 60000, // Longer idle time, close idle clients after 60 seconds
-    connectionTimeoutMillis: 5000, // Longer connection establishment timeout
+    connectionTimeoutMillis: 10000, // Longer connection establishment timeout
     // Additional configurations as necessary, such as SSL
 });
 
@@ -13,12 +13,17 @@ const metadataPool = new Pool({
     connectionString: process.env.DATABASE_URL,
     max: 30, // Higher number of connections to handle frequent writes
     idleTimeoutMillis: 10000, // Shorter idle timeout, close idle clients after 10 seconds
-    connectionTimeoutMillis: 2000, // Quick failure on connection establishment
+    connectionTimeoutMillis: 10000, // Quick failure on connection establishment
     // Additional configurations as necessary, such as SSL
-}) //do we need a new database URL for metadatapool?
+})
 
+// Check initial connection
 pool.query('SELECT NOW()', (err, res) => {
-    console.log(err, res);
+    if (err) {
+        console.error('Error establishing initial pool connection:', err);
+    } else {
+        console.log('Initial pool connection established at:', res.rows[0].now);
+    }
 });
 
 // Listen for app termination / restart events
