@@ -1,7 +1,9 @@
 require('dotenv').config();
-
-
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const fs = require('fs');
+const { pool } = require('./database/index');
+const {initAlerts} = require("./services/websocketService");
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,16 +14,25 @@ const client = new Client({
     ]
 });
 
-const { pool } = require('./database/index'); // ensure the path is correct
-const fs = require('fs');
-const {initAlerts} = require("./services/websocketService");
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 
+//load commands
 for (const file of commandFiles){
     const command = require(`./commands/${file}`);
     client.commands.set(command.data.name, command); /*change   client.commands.set(command.data.name, command);  */
-    console.log(`Loading command ${command.name}`);
+    console.log(`Loading command ${command.data.name}`);
+}
+
+// Load events
+for (const file of eventFiles) {
+    const event = require(`./events/${file}`);
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args));
+    } else {
+        client.on(event.name, (...args) => event.execute(...args));
+    }
 }
 
 client.once('ready', async () => {
@@ -41,9 +52,7 @@ client.once('ready', async () => {
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
-
     const command = client.commands.get(interaction.commandName);
-
     if (!command) return;
 
     try {
@@ -54,26 +63,11 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-
-// client.on('messageCreate', message => {
-//     if (!message.content.startsWith('!') || message.author.bot) return;
-//
-//     const args = message.content.slice(1).trim().split(/ +/);
-//     const commandName = args.shift().toLowerCase();
-//
-//     if (!client.commands.has(commandName)) return;
-//
-//     const command = client.commands.get(commandName);
-//
-//     try {
-//         command.execute(message, args);
-//     } catch (error) {
-//         console.error(error);
-//         message.reply('There was an error executing that command.');
-//     }
-// });
-
-//todo CREATE USER PROFILES TO WORK WITH PROMPT FOR MODELS feedback and bug ect.
-
-
 client.login(process.env.DISCORD_TOKEN);
+
+
+/*
+* todo  create handling for lost bot interaction for all commands
+*  todo   create command logging database
+*
+* */

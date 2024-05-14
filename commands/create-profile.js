@@ -8,95 +8,72 @@ module.exports = {
         .setDescription('Create User Profile.'),
 
     async execute(interaction) {
-        const modal = new ModalBuilder()
-            .setCustomId('createUserProfile')
-            .setTitle('User Profile Information');
+        console.log('Executing command to create profile...');
+        try {
+            const modal = new ModalBuilder()
+                .setCustomId('createUserProfile')
+                .setTitle('Create User Profile');
 
-        // Create text input components for each field
-        const timeZoneInput = new TextInputBuilder()
-            .setCustomId('time_zone')
-            .setLabel('Your Time Zone (e.g., America/New_York)')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            // Create text input components for each field
+            const timeZoneInput = new TextInputBuilder()
+                .setCustomId('time_zone')
+                .setLabel('Time Zone TZ format (America/New_York)')
+                .setPlaceholder('America/Chicago')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const emailInput = new TextInputBuilder()
-            .setCustomId('email')
-            .setLabel('Your Email Address')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            const emailInput = new TextInputBuilder()
+                .setCustomId('email')
+                .setLabel('Your Email Address')
+                .setPlaceholder('lizards@gmail.com')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const mobileNumberInput = new TextInputBuilder()
-            .setCustomId('mobile_number')
-            .setLabel('Your Mobile Number')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            const mobileNumberInput = new TextInputBuilder()
+                .setCustomId('mobile_number')
+                .setLabel('Mobile Number')
+                .setPlaceholder('1234567899')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const investmentProfileInput = new TextInputBuilder()
-            .setCustomId('investment_profile')
-            .setLabel('Your Investment Profile (e.g., Conservative, Aggressive)')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            const investmentProfileInput = new TextInputBuilder()
+                .setCustomId('investment_profile')
+                .setLabel('Investment Profile (Consrv, Aggrsv)')
+                .setPlaceholder('Aggressive')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const riskToleranceInput = new TextInputBuilder()
-            .setCustomId('risk_tolerance')
-            .setLabel('Your Risk Tolerance (e.g., Low, Medium, High)')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            const riskToleranceInput = new TextInputBuilder()
+                .setCustomId('risk_tolerance')
+                .setLabel('Risk Tolerance (Low, Medium, High)')
+                .setPlaceholder('High')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        const favoriteCryptocurrenciesInput = new TextInputBuilder()
-            .setCustomId('favorite_cryptocurrencies')
-            .setLabel('Your Favorite Cryptocurrencies (e.g., BTC, ETH)')
-            .setStyle(TextInputStyle.Short)
-            .setRequired(true);
+            const favoriteCryptocurrenciesInput = new TextInputBuilder()
+                .setCustomId('favorite_cryptocurrencies')
+                .setLabel('Favorite Cryptocurrencies (BTC, ETH)')
+                .setPlaceholder('BTC')
+                .setStyle(TextInputStyle.Short)
+                .setRequired(true);
 
-        // Add inputs to modal
-        modal.addComponents(
-            new ActionRowBuilder().addComponents(timeZoneInput),
-            new ActionRowBuilder().addComponents(emailInput),
-            new ActionRowBuilder().addComponents(mobileNumberInput),
-            new ActionRowBuilder().addComponents(investmentProfileInput),
-            new ActionRowBuilder().addComponents(riskToleranceInput),
-            new ActionRowBuilder().addComponents(favoriteCryptocurrenciesInput)
-        );
+            modal.addComponents(
+                new ActionRowBuilder().addComponents(timeZoneInput),
+                new ActionRowBuilder().addComponents(emailInput),
+                new ActionRowBuilder().addComponents(mobileNumberInput),
+                new ActionRowBuilder().addComponents(investmentProfileInput),
+                new ActionRowBuilder().addComponents(riskToleranceInput),
+                /*new ActionRowBuilder().addComponents(favoriteCryptocurrenciesInput)*/
+            );
 
-        // Show the modal to the user
-        await interaction.showModal(modal);
+            // Show the modal to the user
+            await interaction.showModal(modal);
+        } catch (error) {
+            console.error('Failed to execute create-profile command:', error);
+            await interaction.reply({content: 'Failed to open the profile creation modal.', ephemeral: true});
+        }
     },
 
-    async modalSubmit(modalInteraction) {
-        if (modalInteraction.customId !== 'createUserProfile') return;
-
-        // Extract user-provided data from the modal
-        const timeZone = modalInteraction.fields.getTextInputValue('time_zone');
-        const email = modalInteraction.fields.getTextInputValue('email');
-        const mobileNumber = modalInteraction.fields.getTextInputValue('mobile_number');
-        const investmentProfile = modalInteraction.fields.getTextInputValue('investment_profile');
-        const riskTolerance = modalInteraction.fields.getTextInputValue('risk_tolerance');
-        const favoriteCryptocurrencies = modalInteraction.fields.getTextInputValue('favorite_cryptocurrencies');
-
-        // Construct the user profile data object with only the data provided by user input
-        const userData = {
-            time_zone: timeZone,
-            email: email,
-            mobile_number: mobileNumber,
-            investment_profile: investmentProfile,
-            risk_tolerance: riskTolerance,
-            favorite_cryptocurrencies: favoriteCryptocurrencies,
-        };
-
-        // Call the upsertUserProfile to write data to the database
-        try {
-            await userModel.upsertUserProfile(modalInteraction, userData);
-            await modalInteraction.reply({ content: 'Your profile has been successfully updated!', ephemeral: true });
-        } catch (error) {
-            console.error('Error updating user profile:', error);
-            await modalInteraction.reply({ content: 'Failed to update your profile. Please try again later.', ephemeral: true });
-        }
-    }
-
-
-}
-
-//todo submit the new slash command to discord.
+};
 
 
