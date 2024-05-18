@@ -9,11 +9,18 @@ module.exports = {
 
     async execute(interaction) {
         console.log('Executing command to create profile...');
-        const startTime = Date.now();
-        interaction.client.startTime = startTime; // Store the start time in the client object
+
         try {
+            const commandId = interaction.commandId;
+            const commandName = interaction.commandName;
+            const startTime = Date.now();
+
+            console.log(`createUserProfile_${commandId}_${commandName}_${startTime}`);
+            // Ensure all parts are included in the custom ID
+            const customId = `createUserProfile_${commandId}_${commandName}_${startTime}`;
+
             const modal = new ModalBuilder()
-                .setCustomId('createUserProfile')
+                .setCustomId(customId)
                 .setTitle('Create User Profile');
 
             // Create text input components for each field
