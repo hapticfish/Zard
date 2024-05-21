@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const commandUsageModel = require("../database/commandUsageModel");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,13 +26,55 @@ Hello! Here's a detailed list of commands you can use with examples:
 
 What can I help you with today?
         `;
+
+        const startTime = Date.now(); // Start time for response time calculation
         try {
             // Send a DM to the user with the commands menu, or send it in the channel if DMs are not available
             await interaction.user.send(commandsMenu);
             await interaction.reply({ content: 'I\'ve sent you a DM with all available commands! 📬', ephemeral: true });
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Displays a detailed list of all available commands and their usage examples.\'),\n' +
+                    '    async execute(interaction) {',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
         } catch (error) {
             // If there's an error sending the DM, possibly due to DMs being closed, send the message in the channel
             await interaction.reply({ content: commandsMenu, ephemeral: true });
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Displays a detailed list of all available commands and their usage examples.\'),\n' +
+                    '    async execute(interaction) {',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
+
         }
     }
 };

@@ -57,4 +57,28 @@ async function checkUserProfileExists(userId) {
     }
 }
 
-module.exports = { bufferAndWriteMetadata, checkUserProfileExists};
+/**
+ * Fetches the user's timezone from the database.
+ * @param {string} userId - The user ID to fetch the timezone for.
+ * @returns {Promise<string|null>} - The user's timezone or null if not found.
+ */
+async function getUserTimezone(userId) {
+    const query = `
+        SELECT time_zone
+        FROM user_profiles
+        WHERE user_id = $1;
+    `;
+    try {
+        const result = await pool.query(query, [userId]);
+        if (result.rows.length > 0) {
+            return result.rows[0].time_zone;
+        }
+        return null;
+    } catch (error) {
+        console.error(`Error fetching timezone for user_id ${userId}:`, error);
+        throw error;
+    }
+}
+
+
+module.exports = { getUserTimezone, bufferAndWriteMetadata, checkUserProfileExists};
