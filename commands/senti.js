@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
+const commandUsageModel = require("../database/commandUsageModel");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -21,6 +22,8 @@ module.exports = {
     async execute(interaction) {
         const timeframe = interaction.options.getString('timeframe') || 'live';
 
+
+        const startTime = Date.now(); // Start time for response time calculation
         // Call to the backend service to retrieve sentiment data
         try {
             const sentimentData = await fetchSentimentData(timeframe); // You need to define this function
@@ -30,9 +33,46 @@ module.exports = {
                 .setColor(0x0099FF);
 
             await interaction.reply({ embeds: [embed] });
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Returns live market sentiment analysis results.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
         } catch (error) {
             console.error('Error fetching sentiment data:', error);
             await interaction.reply({ content: 'Failed to fetch sentiment data. Please try again later.', ephemeral: true });
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log failed command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Returns live market sentiment analysis results.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
         }
     }
 };

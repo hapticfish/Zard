@@ -3,6 +3,7 @@ const redditAuth = require('../services/reddit/redditAuth');
 const PORT = 3000; // Port for the OAuth listener
 const axios = require('axios');
 const qs = require('querystring');
+const commandUsageModel = require("../database/commandUsageModel");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -19,6 +20,9 @@ module.exports = {
         // Check if environment variables are set
         if (!process.env.REDDIT_CLIENT_ID || !process.env.REDDIT_CLIENT_SECRET) {
             console.error('\nReddit client ID or secret is not set.\n');
+
+
+
             return interaction.reply({ content: 'The bot is not properly configured with Reddit client credentials.', ephemeral: true });
         }
 
