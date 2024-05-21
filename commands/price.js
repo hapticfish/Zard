@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
+const commandUsageModel = require("../database/commandUsageModel");
 
 async function fetchWithLogging(url, exchange) {
     // Dynamically import node-fetch
@@ -37,6 +38,8 @@ module.exports = {
             'MEXC': `https://www.mexc.com/open/api/v2/market/ticker?symbol=${formattedPairs.MEXC}`
         };
 
+        const startTime = Date.now(); // Start time for response time calculation
+
         try {
             const responses = await Promise.all(Object.entries(apiUrls).map(([exchange, url]) => fetchWithLogging(url, exchange)));
             let compiledMessage = '';
@@ -63,6 +66,25 @@ module.exports = {
 
             await interaction.deferReply();
             await interaction.editReply(compiledMessage);
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Fetches the current price of a specified cryptocurrency from multiple exchanges.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
         } catch (error) {
             console.error(error);
             if (error.message.includes('451')) {
@@ -70,6 +92,24 @@ module.exports = {
             } else {
                 await interaction.followUp('There was an error fetching the cryptocurrency prices.');
             }
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log failed command usage
+            await commandUsageModel.logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId,
+                commandName: interaction.commandName,
+                description: 'Fetches the current price of a specified cryptocurrency from multiple exchanges.',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data),
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
         }
     },
 };
