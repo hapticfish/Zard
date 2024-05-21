@@ -1,11 +1,15 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('help')
         .setDescription('Displays a detailed list of all available commands and their usage examples.'),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
+
+
         const commandsMenu = `
 Hello! Here's a detailed list of commands you can use with examples:
 

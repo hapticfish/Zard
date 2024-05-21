@@ -1,12 +1,14 @@
 // commands/ping.js
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
         .setDescription('Replies with Pong!'),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
 
         const startTime = Date.now(); // Start time for response time calculation
 

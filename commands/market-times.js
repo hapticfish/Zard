@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const moment = require('moment-timezone');
-const { getUserTimezone } = require('../database/databaseUtil');
+const { getUserTimezone, updateLastBotInteraction} = require('../database/databaseUtil');
 const commandUsageModel = require("../database/commandUsageModel");
 
 module.exports = {
@@ -12,6 +12,8 @@ module.exports = {
     async execute(interaction) {
         const userId = interaction.user.id;
         let userTimezone = 'UTC';
+
+        await updateLastBotInteraction(userId);
 
         const startTime = Date.now(); // Start time for response time calculation
         try {

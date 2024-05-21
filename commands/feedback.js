@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder } = require('discord.js');
-const { checkUserProfileExists } = require('../database/databaseUtil'); // Adjust the path as necessary based on your project structure
+const { checkUserProfileExists, updateLastBotInteraction} = require('../database/databaseUtil'); // Adjust the path as necessary based on your project structure
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -7,6 +7,7 @@ module.exports = {
         .setDescription('Submit feedback form.'),
 
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         try{
             const userExists = await checkUserProfileExists(interaction.user.id);
             if (!userExists) {

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,6 +21,7 @@ module.exports = {
                     { name: 'Past Year', value: 'year' }
                 )),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const timeframe = interaction.options.getString('timeframe') || 'live';
 
 

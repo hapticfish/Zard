@@ -2,12 +2,14 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const AlertModel = require('../database/alertModel'); // Ensure the path is accurate
 const moment = require('moment');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('show-alerts')
         .setDescription('Show a list of all your active alerts.'),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const userId = interaction.user.id; // Get user ID from interaction
 
 

@@ -68,6 +68,5 @@ client.login(process.env.DISCORD_TOKEN);
 
 /*
 * todo  create handling for lost bot interaction for all commands
-*  todo   create command logging database
 *
 * */

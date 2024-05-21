@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 async function fetchWithLogging(url, exchange) {
     // Dynamically import node-fetch
@@ -28,6 +29,7 @@ module.exports = {
                 .setRequired(true)),
 
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const symbol = interaction.options.getString('symbol').toUpperCase();
         const normalizedPair = symbol.replace(/[-\s]/g, '').toUpperCase();
         const formattedPairs = formatPairForAllExchanges(normalizedPair);

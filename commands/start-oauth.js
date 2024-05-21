@@ -4,6 +4,7 @@ const PORT = 3000; // Port for the OAuth listener
 const axios = require('axios');
 const qs = require('querystring');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,6 +13,7 @@ module.exports = {
         .setDefaultMemberPermissions(0), // Sets to zero to make the command admin-only
 
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         // Ensure only the admin can run this command
         if (interaction.user.id !== process.env.ADMIN_DISCORD_ID) {
             return interaction.reply({ content: 'You do not have permission to execute this command.', ephemeral: true });

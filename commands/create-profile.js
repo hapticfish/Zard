@@ -1,6 +1,7 @@
 
 const { ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, SlashCommandBuilder} = require('discord.js');
 const userModel = require("../database/userModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -8,6 +9,7 @@ module.exports = {
         .setDescription('Create User Profile.'),
 
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         console.log('Executing command to create profile...');
 
         try {

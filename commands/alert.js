@@ -5,6 +5,7 @@ const AlertModel = require('../database/alertModel');
 const { formatPairForAllExchanges, truncateToFiveDec } = require('../utils/currencyUtils');
 const { createFlexibleAlertCallback } = require('../utils/callbackFactory');
 const { logCommandUsage } = require('../database/commandUsageModel');
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -37,6 +38,8 @@ module.exports = {
     async execute(interaction) {
         console.log(interaction); // Log the entire interaction object
         console.log(interaction.options); // Log all the options received
+
+        await updateLastBotInteraction(interaction.user.id);
 
         const cryptoPair = interaction.options.getString('cryptopair');
         const direction = interaction.options.getString('direction');

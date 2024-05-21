@@ -1,7 +1,10 @@
+
 const { SlashCommandBuilder } = require('@discordjs/builders');
 // const fetch = require('node-fetch'); // Assuming 'node-fetch' is installed and can be required directly
 const { formatPairForAllExchanges } = require('../utils/currencyUtils');
 const commandUsageModel = require('../database/commandUsageModel'); // Import the command usage model
+const {updateLastBotInteraction} = require("../database/databaseUtil"); // Import the command usage model
+
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -20,6 +23,7 @@ module.exports = {
                 .setDescription('Currency to convert to')
                 .setRequired(true)),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const amount = interaction.options.getNumber('amount');
         const fromCurrency = interaction.options.getString('from_currency').toUpperCase();
         const toCurrency = interaction.options.getString('to_currency').toUpperCase();

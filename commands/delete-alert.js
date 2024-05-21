@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const AlertModel = require('../database/alertModel'); // Ensure the path is accurate
-const commandUsageModel = require('../database/commandUsageModel'); // Import the command usage model
+const commandUsageModel = require('../database/commandUsageModel');
+const {updateLastBotInteraction} = require("../database/databaseUtil"); // Import the command usage model
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +12,7 @@ module.exports = {
                 .setDescription('Enter the alert ID(s) to delete, separated by spaces')
                 .setRequired(true)),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const alertIdsInput = interaction.options.getString('alert_ids');
         const alertIds = alertIdsInput.split(' '); // Split input by spaces to handle multiple IDs
         const userId = interaction.user.id;

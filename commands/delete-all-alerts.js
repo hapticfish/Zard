@@ -1,12 +1,14 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const AlertModel = require('../database/alertModel');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('delete-all-alerts')
         .setDescription('Deletes all alerts set by the user.'),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         const userId = interaction.user.id; // This gets the ID of the user who invoked the slash command
 
         const startTime = Date.now(); // Start time for response time calculation

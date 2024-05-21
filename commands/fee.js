@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const puppeteer = require('puppeteer');
 const commandUsageModel = require("../database/commandUsageModel");
+const {updateLastBotInteraction} = require("../database/databaseUtil");
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,6 +13,7 @@ module.exports = {
                 .setRequired(true)
                 .addChoices({ name: 'Bitcoin (BTC)', value: 'BTC' })),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         await interaction.deferReply();  // Defers the reply, acknowledging the interaction.
         const currency = interaction.options.getString('currency');
 

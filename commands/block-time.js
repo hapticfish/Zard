@@ -1,6 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { loadFetch } = require('../utils/fetch');
-const commandUsageModel = require('../database/commandUsageModel'); // Import the command usage model
+const commandUsageModel = require('../database/commandUsageModel');
+const {updateLastBotInteraction} = require("../database/databaseUtil"); // Import the command usage model
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -11,6 +12,7 @@ module.exports = {
                 .setDescription('The ticker symbol of the cryptocurrency')
                 .setRequired(true)),
     async execute(interaction) {
+        await updateLastBotInteraction(interaction.user.id);
         await interaction.deferReply();  // Defer the reply to have more than 3 seconds to respond
         const ticker = interaction.options.getString('ticker').toUpperCase();
         console.log(`[START] Execute function triggered for block-time with ticker: ${ticker}.`);
