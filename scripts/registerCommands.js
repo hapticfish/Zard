@@ -79,11 +79,7 @@ const commands = [
         .setDescription('Displays a list of all available commands.'),
     new SlashCommandBuilder()
         .setName('market-times')
-        .setDescription('Displays major market open and close times in your local time.')
-        .addStringOption(option =>
-            option.setName('timezone')
-                .setDescription('Your time zone (e.g., America/New_York)')
-                .setRequired(false)),
+        .setDescription('Displays major market open and close times in your local time.'),
     new SlashCommandBuilder().setName('ping').setDescription('Replies with Pong!'),
     new SlashCommandBuilder().setName('price').setDescription('Show current price for provided cryptocurrency from 3 exchanges.')
         .addStringOption(option =>
@@ -100,7 +96,7 @@ const commands = [
         .setDefaultMemberPermissions(0), // This effectively removes the command from view for anyone who isn't an admin
     new SlashCommandBuilder()
         .setName('senti')
-        .setDescription('Returns live market sentiment analysis results.')
+        .setDescription('returns live market sentiment analysis data.')
         .addStringOption(option =>
             option.setName('timeframe')
                 .setDescription('The timeframe for sentiment analysis')

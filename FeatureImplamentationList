@@ -109,7 +109,7 @@ monetization
 -alerts in second session appear to not be loading from previous session.
 -optimize processing speed for blockT
 -adding alerts appears to not persist in the list when restarted
-
+-handle time zone is not accepting correct values America/Argentina/Buenos_Aires
 
 -TESTING-
 

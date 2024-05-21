@@ -6,7 +6,7 @@ const {updateLastBotInteraction} = require("../database/databaseUtil");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('senti')
-        .setDescription('Returns live market sentiment analysis results.')
+        .setDescription('returns live market sentiment analysis data.')
         .addStringOption(option =>
             option.setName('timeframe')
                 .setDescription('The timeframe for sentiment analysis')
@@ -44,7 +44,7 @@ module.exports = {
                 userID: interaction.user.id,
                 commandID: interaction.commandId,
                 commandName: interaction.commandName,
-                description: 'Returns live market sentiment analysis results.',
+                description: 'returns live market sentiment analysis data.',
                 timestamp: new Date(),
                 guildID: interaction.guildId,
                 channelID: interaction.channelId,
@@ -66,7 +66,7 @@ module.exports = {
                 userID: interaction.user.id,
                 commandID: interaction.commandId,
                 commandName: interaction.commandName,
-                description: 'Returns live market sentiment analysis results.',
+                description: 'returns live market sentiment analysis data.',
                 timestamp: new Date(),
                 guildID: interaction.guildId,
                 channelID: interaction.channelId,
