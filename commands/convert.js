@@ -29,7 +29,7 @@ module.exports = {
         const toCurrency = interaction.options.getString('to_currency').toUpperCase();
 
         if (isNaN(amount)) {
-            await interaction.reply('Please provide a valid amount for conversion.');
+            await interaction.reply({content: 'Please provide a valid amount for conversion.', ephemeral: true});
             return;
         }
 
@@ -45,10 +45,10 @@ module.exports = {
                 const responseFrom = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${fromPairSymbol}`).then(res => res.json());
                 if (!responseFrom.price) {
                     if (responseFrom.status === 451) {
-                        await interaction.reply('Failed: restricted region access');
+                        await interaction.reply({content: 'Failed: restricted region access', ephemeral: true});
                         return;
                     }
-                    await interaction.reply(`Could not fetch price for conversion from ${fromCurrency} to USDT.`);
+                    await interaction.reply({content: `Could not fetch price for conversion from ${fromCurrency} to USDT.`, ephemeral: true});
                     return;
                 }
                 convertedAmount *= parseFloat(responseFrom.price);
@@ -58,17 +58,17 @@ module.exports = {
                 const responseTo = await fetch(`https://api.binance.com/api/v3/ticker/price?symbol=${toPairSymbol}`).then(res => res.json());
                 if (!responseTo.price) {
                     if (responseTo.status === 451) {
-                        await interaction.reply('Failed: restricted region access');
+                        await interaction.reply({content: 'Failed: restricted region access', ephemeral: true});
                         return;
                     }
-                    await interaction.reply(`Could not fetch price for conversion from USDT to ${toCurrency}.`);
+                    await interaction.reply({content: `Could not fetch price for conversion from USDT to ${toCurrency}.`, ephemeral: true});
                     return;
                 }
                 convertedAmount *= 1 / parseFloat(responseTo.price);
             }
 
             console.log(`Successfully processed convert command. Amount: ${amount} From Currency: ${fromCurrency}, Converted Amount: ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}`);
-            await interaction.reply(`${amount} ${fromCurrency} is equivalent to ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}.`);
+            await interaction.reply({content: `${amount} ${fromCurrency} is equivalent to ${convertedAmount.toLocaleString(undefined, { minimumFractionDigits: 5, maximumFractionDigits: 5 })} ${toCurrency}.`, ephemeral: true});
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;
@@ -90,7 +90,7 @@ module.exports = {
 
         } catch (error) {
             console.error('Error fetching the conversion rate:', error);
-            await interaction.reply('There was an error fetching the conversion rate.');
+            await interaction.reply({content: 'There was an error fetching the conversion rate.',ephemeral: true});
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;

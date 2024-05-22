@@ -65,7 +65,7 @@ async function handleCreateUserProfile(interaction, commandInfo) {
         const errors = validateData(userData);
         if (errors.length > 0) {
             console.log('Validation errors:', errors);
-            await interaction.editReply({ content: `Please correct the following errors:\n- ${errors.join('\n- ')}` });
+            await interaction.editReply({ content: `Please correct the following errors:\n- ${errors.join('\n- ')}`,ephemeral: true });
 
             // Log failed command usage
             await logUsage(interaction, false, errors.join(', '), commandInfo.startTime, commandInfo);
@@ -75,13 +75,13 @@ async function handleCreateUserProfile(interaction, commandInfo) {
         console.log('Data validation successful. Updating user profile...');
         await userModel.upsertUserProfile(interaction, userData);
         console.log('User profile updated successfully.');
-        await interaction.editReply({ content: 'Your profile has been successfully updated!' });
+        await interaction.editReply({ content: 'Your profile has been successfully updated!',ephemeral: true  });
 
         // Log successful command usage
         await logUsage(interaction, true, null, commandInfo.startTime, commandInfo);
     } catch (error) {
         console.error('Error during modal submission handling:', error);
-        await interaction.editReply({ content: 'Failed to update your profile. Please try again later.' });
+        await interaction.editReply({ content: 'Failed to update your profile. Please try again later.',ephemeral: true  });
 
         // Log failed command usage
         await logUsage(interaction, false, error.message, commandInfo.startTime, commandInfo);
@@ -163,34 +163,3 @@ function validateData({ timeZone, email, mobileNumber, investmentProfile, riskTo
 
 //todo This is whats being inserted into the table detail: 'Failing row contains (14, 211232814702657536, null, null, 2024-05-15 00:57:34.051, 1009641408040292352, 1009641408040292355, [{"value":
 // "Complaint","type":4,"customId":"feedbackTypeInput"},{..., t, null, 935, No description available).',
-
-/*Feedback submitted successfully
-Command usage logged: UserID - 211232814702657536, CommandName - null
-Database insertion error: error: null value in column "commandid" of relation "commandusage_2024" violates not-null constraint
-    at C:\Users\John\Desktop\PersonalDevProjs\discordbot\node_modules\pg\lib\client.js:526:17
-    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
-    at async logCommandUsage (C:\Users\John\Desktop\PersonalDevProjs\discordbot\database\commandUsageModel.js:39:13)
-    at async logUsage (C:\Users\John\Desktop\PersonalDevProjs\discordbot\utils\writeLogUsageHelper.js:26:5)
-    at async handleUserFeedbackModal (C:\Users\John\Desktop\PersonalDevProjs\discordbot\events\interactionCreate.js:107:9)
-    at async handleModalSubmit (C:\Users\John\Desktop\PersonalDevProjs\discordbot\events\interactionCreate.js:33:13)
-    at async Object.execute (C:\Users\John\Desktop\PersonalDevProjs\discordbot\events\interactionCreate.js:12:13) {
-  length: 430,
-  severity: 'ERROR',
-  code: '23502',
-  detail: 'Failing row contains (14, 211232814702657536, null, null, 2024-05-15 00:57:34.051, 1009641408040292352, 1009641408040292355, [{"value":
-"Complaint","type":4,"customId":"feedbackTypeInput"},{..., t, null, 935, No description available).',
-  hint: undefined,
-  position: undefined,
-  internalPosition: undefined,
-  internalQuery: undefined,
-  where: undefined,
-  schema: 'public',
-  table: 'commandusage_2024',
-  column: 'commandid',
-  dataType: undefined,
-  constraint: undefined,
-  file: 'execMain.c',
-  line: '2009',
-  routine: 'ExecConstraints'
-}
-*/
