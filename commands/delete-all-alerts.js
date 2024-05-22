@@ -14,7 +14,7 @@ module.exports = {
         const startTime = Date.now(); // Start time for response time calculation
         try {
             await AlertModel.deactivateAllAlerts(userId, 'User deactivated all alerts');
-            await interaction.reply('All your alerts have been successfully deleted.');
+            await interaction.reply({content: 'All your alerts have been successfully deleted.', ephemeral: true});
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;

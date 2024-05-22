@@ -77,9 +77,9 @@ module.exports = {
 
         // Respond to the interaction
         if (responseMessage === '') {
-            await interaction.reply('No valid alert IDs provided or no alerts matched your IDs.');
+            await interaction.reply({content: 'No valid alert IDs provided or no alerts matched your IDs.', ephemeral: true});
         } else {
-            await interaction.reply(responseMessage.trim());
+            await interaction.reply({content: responseMessage.trim(), ephemeral: true});
         }
     }
 };
