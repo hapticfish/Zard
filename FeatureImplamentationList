@@ -19,23 +19,6 @@
     enable feature for use or disable feature
     25% and 10% count down
 
--for database user_profiles add/change
-    most_active_tf = most active time frames calculated activly updated
-    clarify/rename 'active_status' as sub_active_status
-    add ServerID as column
-    Roles held
-    host join date
-    status
-
-    Server table
-        ServerID
-        Server Name
-        Server Icon
-        Region
-        Verification Lvl
-        num_users (how to keep udpated?)
-
-
 -migrate all or most commands to dm and also main channel (Might be able to use ephemeral feature)
 
 -chart pattern identifier, (send notification to subscribed user)

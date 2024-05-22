@@ -62,7 +62,7 @@ module.exports = {
         try {
             const alert = await AlertModel.addAlert(interaction.user.id, formattedPair, targetPrice, direction, alertType);
             console.log(`Alert added: User ${interaction.user.id}, Pair ${formattedPair}, Price ${targetPrice}, Direction ${direction}, Type ${alertType}`);
-            await interaction.reply(`Alert set for ${formattedPair} ${direction} ${targetPrice}. Type: ${alertType}.`);
+            await interaction.reply({content: `Alert set for ${formattedPair} ${direction} ${targetPrice}. Type: ${alertType}.`, ephemeral: true});
 
             subscribeToPair(formattedPair, alert.id, targetPrice, direction, alertType, createFlexibleAlertCallback({
                 formattedPair: formattedPair,
@@ -93,7 +93,7 @@ module.exports = {
 
         } catch (error) {
             console.error('Alert setup error:', { userId: interaction.user.id, error: error.message });
-            await interaction.reply('There was an error setting up your alert. Please try again.');
+            await interaction.reply({content: 'There was an error setting up your alert. Please try again.', ephemeral: true});
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;
