@@ -6,24 +6,18 @@
 -Add a timestamp in the response for the alert. remove reagonal feature not possible
 -The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
 
+-Create a subscribe to Notification feature 10% and 25% time warning
+    for 4h
+        1h
+        CME
+        Market Opens
+
 -implement 4h opening and 1 hour opening notifications
     Add working notification for 25% and 10% time before opening
-
--find way to add/record user to database even if they are not subscribed as paid
-    in this case would record...
-        last sentiment check
-        account)_type
-        average active times
 
 -implement notification for when CME futures close and open
     enable feature for use or disable feature
     25% and 10% count down
-
--Trading event notification enableor command
-    1h
-    4h
-    CME Futures
-    Market Opens and Closes
 
 -for database user_profiles add/change
     most_active_tf = most active time frames calculated activly updated
@@ -32,20 +26,6 @@
     Roles held
     host join date
     status
-
--create the following tables for data collection
-    Command table
-        CommandID
-        CommandName
-        Description
-        Others possibly
-
-    CommandUsage table (must be indexed and partioned)
-        UsageID
-        UserID
-        CommandID
-        Timestamp
-        ServerID (what server this instance is from)
 
     Server table
         ServerID
@@ -56,15 +36,9 @@
         num_users (how to keep udpated?)
 
 
--migrate all or most commands to dm and also main channel
+-migrate all or most commands to dm and also main channel (Might be able to use ephemeral feature)
 
 -chart pattern identifier, (send notification to subscribed user)
-
--implement the warning notification feature 25 and 10 percent for mo command enable/disable
-
--update hello (make hello and help the same)
-
--add command tracking (what command used, how offten in what time frame and dates, what areguments, ect)
 
 -Sentiment Analysis
     -scan existing chats from all channels accepted in discords
@@ -101,7 +75,7 @@ monetization
         will need database for monetization (must design it and model it)
     - have vairable pricing for testing which price make has the most subscribers
     FIND PRICING MODEL THAT PREVENTS SINGLE USE SHARING EXPLOITATION (ie, one user buys and shared results.)
-    
+
 
 
 -BUGS-
