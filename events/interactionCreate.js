@@ -149,17 +149,10 @@ async function handleBugReportModal(interaction, commandInfo) {
 
 function validateData({ timeZone, email, mobileNumber, investmentProfile, riskTolerance }) {
     let errors = [];
-    if (!/^[A-Za-z_]+\/[A-Za-z_]+$/.test(timeZone)) errors.push('Time zone must be in "Continent/City" format.');
+    if (!/^[A-Za-z_]+(\/[A-Za-z_]+)+$/.test(timeZone)) errors.push('Time zone must be in "Continent/Region/City" format.');
     if (!/^\S+@\S+\.\S+$/.test(email)) errors.push('Invalid email address format.');
     if (!/^[\d+]{10,15}$/.test(mobileNumber)) errors.push('Mobile number should be between 10 to 15 digits.');
     if (!['Bonds', 'Stocks', 'Crypto', 'Funds', 'Aggressive', 'Conservative', 'Moderate'].includes(investmentProfile)) errors.push('Invalid investment profile.');
     if (!['Low', 'Medium', 'High'].includes(riskTolerance)) errors.push('Invalid risk tolerance.');
     return errors;
 }
-
-
-//todo Still reciving this error Trace back where command name is coming from WHY IS IT NULL!!
-//todo need to find a way to grab the command name why is it Null!!
-
-//todo This is whats being inserted into the table detail: 'Failing row contains (14, 211232814702657536, null, null, 2024-05-15 00:57:34.051, 1009641408040292352, 1009641408040292355, [{"value":
-// "Complaint","type":4,"customId":"feedbackTypeInput"},{..., t, null, 935, No description available).',

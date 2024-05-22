@@ -49,18 +49,20 @@ const userModel = {
         const params = [
             interaction.user.id,
             `${interaction.user.username}#${interaction.user.discriminator}`,
-            userData.time_zone,
+            userData.timeZone,
             userData.email,
             interaction.locale,
-            userData.investment_profile,
-            userData.risk_tolerance,
-            userData.mobile_number,
-            userData.favorite_cryptocurrencies,
+            userData.investmentProfile,
+            userData.riskTolerance,
+            userData.mobileNumber,
+            userData.favoriteCryptocurrencies ||  null,
             interaction.member.roles.cache.map(role => role.name).join(', '),
             interaction.member.nickname,
             interaction.member.permissions.bitfield.toString(),
             interaction.member.joinedAt.toISOString().split('T')[0]  // Convert Date to YYYY-MM-DD format
         ];
+
+        console.log('Executing query with params:', params); // Debug log
 
         try {
             await pool.query(query, params);
