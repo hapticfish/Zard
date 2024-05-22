@@ -19,8 +19,6 @@
     enable feature for use or disable feature
     25% and 10% count down
 
--migrate all or most commands to dm and also main channel (Might be able to use ephemeral feature)
-
 -chart pattern identifier, (send notification to subscribed user)
 
 -Sentiment Analysis
