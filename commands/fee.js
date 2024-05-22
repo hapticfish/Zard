@@ -19,7 +19,7 @@ module.exports = {
 
         // Ensure the currency is BTC
         if (currency !== 'BTC') {
-            await interaction.editReply('This command currently only supports Bitcoin (BTC).');
+            await interaction.editReply({content: 'This command currently only supports Bitcoin (BTC).', ephemeral: true });
             return;
         }
 
@@ -49,7 +49,7 @@ module.exports = {
 
         } catch (error) {
             console.error('Error fetching the transaction fees:', error);
-            await interaction.editReply('There was an error fetching the transaction fees.');
+            await interaction.editReply({content: 'There was an error fetching the transaction fees.', ephemeral: true });
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;

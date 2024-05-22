@@ -90,9 +90,9 @@ module.exports = {
         } catch (error) {
             console.error(error);
             if (error.message.includes('451')) {
-                await interaction.followUp('Failed: Restricted region access');
+                await interaction.followUp({content: 'Failed: Restricted region access', ephemeral: true });
             } else {
-                await interaction.followUp('There was an error fetching the cryptocurrency prices.');
+                await interaction.followUp({content: 'There was an error fetching the cryptocurrency prices.', ephemeral: true });
             }
 
             const endTime = Date.now();

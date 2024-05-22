@@ -17,7 +17,7 @@ module.exports = {
         try {
             const alerts = await AlertModel.getActiveAlerts(userId);
             if (alerts.length === 0) {
-                await interaction.reply('You have no active alerts.');
+                await interaction.reply({content: 'You have no active alerts.', ephemeral: true });
 
                 const endTime = Date.now();
                 const responseTime = endTime - startTime;
@@ -48,7 +48,7 @@ module.exports = {
             });
             response += '```';
 
-            await interaction.reply(response);
+            await interaction.reply({content: response, ephemeral: true });
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;
@@ -70,7 +70,7 @@ module.exports = {
 
         } catch (error) {
             console.error('Failed to retrieve alerts:', error);
-            await interaction.reply('Failed to retrieve alerts. Please try again later.');
+            await interaction.reply({content: 'Failed to retrieve alerts. Please try again later.', ephemeral: true });
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;

@@ -34,7 +34,7 @@ module.exports = {
                 .setDescription(`Sentiment Results: ${sentimentData}`)
                 .setColor(0x0099FF);
 
-            await interaction.reply({ embeds: [embed] });
+            await interaction.user.send({ embeds: [embed] });
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;

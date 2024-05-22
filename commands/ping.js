@@ -14,7 +14,7 @@ module.exports = {
 
         try{
             console.log(`Slash command received: /${interaction.commandName} by ${interaction.user.tag}`);
-            await interaction.reply('Pong!');
+            await interaction.reply({content: 'Pong!', ephemeral: true });
             console.log('Replied with Pong!');
 
             const endTime = Date.now();
@@ -37,7 +37,7 @@ module.exports = {
 
         }catch (error){
             console.error('Error running Ping command:', error);
-            await interaction.reply('Ping failed. Somethings wrong here...');
+            await interaction.reply({content: 'Ping failed. Somethings wrong here...', ephemeral: true });
 
             const endTime = Date.now();
             const responseTime = endTime - startTime;
