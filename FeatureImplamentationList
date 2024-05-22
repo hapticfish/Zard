@@ -3,14 +3,20 @@
 
 -update all time stamps to reference user timezone
 -enable time feature for messages to get user timezone
--Add a timestamp in the response for the alert. remove reagonal feature not possible
+-Add a timestamp in the response for the alert. remove regional feature not possible
 -The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
 
 -Create a subscribe to Notification feature 10% and 25% time warning
-    for 4h
-        1h
-        CME
+    for
+        1h (10% and 25% time warning)
+        4h (10% and 25% time warning)
+        Daily (10% and 25% time warning)
+        Weekly (12h b4 and 4hr b4 1hr b4 time warning)
+        Monthly (1w, 1d, 12h, 4h, 2h, 1h)
+        Quarterly (1w, 1d, 12h, 4h, 2h, 1h)
+        CME Close and open (10% and 25% time warning)
         Market Opens
+        Average time frame between expansions (1h 4h 1d before) (mabey do some research regarding what increases the liklyhood of pos/neg expansion and strongest factors
 
 -implement 4h opening and 1 hour opening notifications
     Add working notification for 25% and 10% time before opening
@@ -32,8 +38,6 @@
 -Add Twitter implementation
     -scanning tweets for sentiment
     -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
-
-update database for sentiment analysis fields
 
 enable SSL certificate and pay it
 
