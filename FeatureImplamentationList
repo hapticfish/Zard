@@ -1,8 +1,6 @@
 
 -IMPLEMENTATION-
 
--The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
-
 -Create a subscribe to Notification feature 10% and 25% time warning
     for
         1h (10% and 25% time warning)
@@ -14,13 +12,6 @@
         CME Close and open (10% and 25% time warning)
         Market Opens
         Average time frame between expansions (1h 4h 1d before) (mabey do some research regarding what increases the liklyhood of pos/neg expansion and strongest factors
-
--implement 4h opening and 1 hour opening notifications
-    Add working notification for 25% and 10% time before opening
-
--implement notification for when CME futures close and open
-    enable feature for use or disable feature
-    25% and 10% count down
 
 -chart pattern identifier, (send notification to subscribed user)
 
