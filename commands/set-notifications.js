@@ -76,3 +76,5 @@ module.exports = {
         }
     },
 };
+//todo Add command logging , add 'bot interactin logging' implament back end functionality, create database table an
+//todo and research relevent feilds and columbs, 
