@@ -1,8 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const AlertModel = require('../database/alertModel'); // Ensure the path is accurate
-const moment = require('moment');
 const commandUsageModel = require("../database/commandUsageModel");
-const {updateLastBotInteraction} = require("../database/databaseUtil");
+const {updateLastBotInteraction, getUserTimezone} = require("../database/databaseUtil");
+const { convertToUserTimezone } = require('../utils/timeUtils');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,9 +12,10 @@ module.exports = {
         await updateLastBotInteraction(interaction.user.id);
         const userId = interaction.user.id; // Get user ID from interaction
 
-
         const startTime = Date.now(); // Start time for response time calculation
         try {
+            const userTimezone = await getUserTimezone(userId) || 'UTC';
+
             const alerts = await AlertModel.getActiveAlerts(userId);
             if (alerts.length === 0) {
                 await interaction.reply({content: 'You have no active alerts.', ephemeral: true });
@@ -43,7 +44,7 @@ module.exports = {
             let response = 'Your active alerts:\n```\nID | Pair | Target Price | Direction | Type | Status | Created At\n';
             alerts.forEach(({ id, crypto_pair, target_price, direction, alert_type, status, creation_date }) => {
                 // Format creation date using moment for simplified output
-                const formattedDate = moment(creation_date).format('YYYY-MM-DD HH:mm:ss');
+                const formattedDate = convertToUserTimezone(creation_date, userTimezone);
                 response += `${id} | ${crypto_pair} | ${target_price} | ${direction} | ${alert_type} | ${status} | ${formattedDate}\n`;
             });
             response += '```';
@@ -89,7 +90,6 @@ module.exports = {
                 errorCode: error.message,
                 responseTime: responseTime
             });
-
         }
     }
 };

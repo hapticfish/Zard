@@ -4,12 +4,12 @@ function createFlexibleAlertCallback(context) {
     return async function alertCallback(newPrice, alertId) {
         console.log(`Alert triggered for ${context.formattedPair} at price: ${newPrice}`);
 
-        const timestamp = context.timestamp();
+        /*const timestamp = context.timestamp();*/
         try {
             await AlertModel.triggerAlert(alertId);
 
             // Constructing the alert message
-            const alertMessage = `Alert: ${context.formattedPair} has moved ${context.direction} to target ${context.targetPrice}. Current price: ${newPrice}. Type: ${context.alertType} Time: ${timestamp}.`;
+            const alertMessage = `Alert: ${context.formattedPair} has moved ${context.direction} to target ${context.targetPrice}. Current price: ${newPrice}. Type: ${context.alertType} /*Time: ${timestamp}*/.`;
 
             if (context.alertType === 'standard') {
                 // Send DM to the user using interaction object

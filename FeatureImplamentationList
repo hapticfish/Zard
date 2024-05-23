@@ -1,9 +1,6 @@
 
 -IMPLEMENTATION-
 
--update all time stamps to reference user timezone
--enable time feature for messages to get user timezone
--Add a timestamp in the response for the alert. remove regional feature not possible
 -The show alerts should show a simplified timestamp for creation time as well as the type of alert. disable reagonal identification not possible
 
 -Create a subscribe to Notification feature 10% and 25% time warning
