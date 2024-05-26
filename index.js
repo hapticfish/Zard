@@ -3,6 +3,9 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const { pool } = require('./database/index');
 const {initAlerts} = require("./services/websocketService");
+const express = require('express');
+const app = express();
+const notificationScheduler = require('./schedulers/notificationScheduler'); // Initialize the scheduler
 
 const client = new Client({
     intents: [
@@ -43,6 +46,10 @@ client.once('ready', async () => {
         console.log('Database connection time:', res.rows[0].now);
         await initAlerts();
         console.log('Alerts initialized successfully.');
+
+        // Initialize the scheduler
+        notificationScheduler.init();
+        console.log('Notification scheduler initialized successfully.');
     } catch (error) {
         console.error('Failed to initialize alerts or database error:', error);
     }
@@ -64,9 +71,3 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(process.env.DISCORD_TOKEN);
-
-
-/*
-* todo  create handling for lost bot interaction for all commands
-*
-* */
