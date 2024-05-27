@@ -136,7 +136,6 @@ const maskToken = (token) => token.substr(token.length - 6);
 
 console.log("Using token:", process.env.DISCORD_TOKEN);
 const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
-
 (async () => {
     try {
         logger.info('Started refreshing application-wide (/) commands.', {
