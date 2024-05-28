@@ -3,7 +3,7 @@ const moment = require('moment-timezone');
 const db = require('../database/tfnotificationsModel'); // Adjust the path as necessary
 
 module.exports = {
-    init() {
+    init(client) {
         // Schedule a task to check for notifications every minute
         cron.schedule('* * * * *', async () => {
             const notifications = await db.getEnabledNotifications(); // Get all enabled notifications
@@ -16,11 +16,11 @@ module.exports = {
                 const secondWarningTime = eventTime.clone().subtract(parseDuration(notification.warning_2)); // Calculate the second warning time
 
                 if (currentTime.isSame(firstWarningTime, 'minute')) {
-                    sendNotification(notification.user_id, `First warning for ${notification.event_type} event`);
+                    sendNotification(notification.user_id, `Notification 1 for ${notification.event_type} event/close approaching in ${notification.warning_1} `);
                 }
 
                 if (currentTime.isSame(secondWarningTime, 'minute')) {
-                    sendNotification(notification.user_id, `Second warning for ${notification.event_type} event`);
+                    sendNotification(notification.user_id, `Notification 2 for ${notification.event_type} event/close approaching in ${notification.warning_1}`);
                 }
             });
         });
@@ -141,9 +141,13 @@ function parseDuration(duration) {
 }
 
 // Function to send notification (implement as needed)
-function sendNotification(userId, message) {
+function sendNotification(client, userId, message) {
     // Send the notification to the user
-    console.log(`Sending notification to user ${userId}: ${message}`);
+    client.users.fetch(userId)
+        .then(user => {
+            user.send(message);
+        })
+        .catch(console.error);
 }
 
-//todo implament the send notification to the user directo message
+//todo implement the send notification to the user direct message

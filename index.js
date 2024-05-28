@@ -48,7 +48,7 @@ client.once('ready', async () => {
         console.log('Alerts initialized successfully.');
 
         // Initialize the scheduler
-        notificationScheduler.init();
+        notificationScheduler.init(client);
         console.log('Notification scheduler initialized successfully.');
     } catch (error) {
         console.error('Failed to initialize alerts or database error:', error);
