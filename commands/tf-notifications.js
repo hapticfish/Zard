@@ -1,6 +1,8 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const tfnotificationsModel = require('../database/tfnotificationsModel'); // Updated path to the database model
+const tfnotificationsModel = require('../database/tfnotificationsModel');
+const {updateLastBotInteraction} = require("../database/databaseUtil");
+const {logCommandUsage} = require("../database/commandUsageModel"); // Updated path to the database model
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -368,23 +370,73 @@ module.exports = {
                         )
                 )),
     async execute(interaction) {
-        const action = interaction.options.getString('action');
-        const firstWarning = interaction.options.getString('first_warning');
-        const secondWarning = interaction.options.getString('second_warning');
-        const event = interaction.options.getSubcommand();
-        const userId = interaction.user.id;
+        console.log(interaction); // Log the entire interaction object
+        console.log(interaction.options); // Log all the options received
 
-        /// Update or insert notification settings in the database
-        if (action === 'enable') {
-            await tfnotificationsModel.upsertTFNotification(userId, event, true, firstWarning, secondWarning);
-            await interaction.reply({ content: `Enabled ${event} notifications with warnings at ${firstWarning} and ${secondWarning}`, ephemeral: true });
-        } else if (action === 'disable') {
-            await tfnotificationsModel.upsertTFNotification(userId, event, false, null, null);
-            await interaction.reply({ content: `Disabled ${event} notifications`, ephemeral: true });
-        } else {
-            await interaction.reply({ content: 'Invalid action', ephemeral: true });
+        const startTime = Date.now();
+
+        try{
+            await updateLastBotInteraction(interaction.user.id);
+
+            const action = interaction.options.getString('action');
+            const firstWarning = interaction.options.getString('first_warning');
+            const secondWarning = interaction.options.getString('second_warning');
+            const event = interaction.options.getSubcommand();
+            const userId = interaction.user.id;
+
+            /// Update or insert notification settings in the database
+            if (action === 'enable') {
+                await tfnotificationsModel.upsertTFNotification(userId, event, true, firstWarning, secondWarning);
+                await interaction.reply({ content: `Enabled ${event} notifications with warnings at ${firstWarning} and ${secondWarning}`, ephemeral: true });
+            } else if (action === 'disable') {
+                await tfnotificationsModel.upsertTFNotification(userId, event, false, null, null);
+                await interaction.reply({ content: `Disabled ${event} notifications`, ephemeral: true });
+            } else {
+                await interaction.reply({ content: 'Invalid action', ephemeral: true });
+            }
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId, // You might need to define or derive this
+                commandName: interaction.commandName,
+                description: 'Enable or disable notifications for specific candle timeframes and market events',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data), // Assuming interaction.options.data contains command parameters
+                success: true,
+                errorCode: null,
+                responseTime: responseTime
+            });
+
+        }catch (error) {
+            console.error('Error handling the interaction:', error);
+            await interaction.reply({ content: 'There was an error processing your request. Please try again later.', ephemeral: true });
+
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+
+            // Log successful command usage
+            await logCommandUsage({
+                userID: interaction.user.id,
+                commandID: interaction.commandId, // You might need to define or derive this
+                commandName: interaction.commandName,
+                description: 'Enable or disable notifications for specific candle timeframes and market events',
+                timestamp: new Date(),
+                guildID: interaction.guildId,
+                channelID: interaction.channelId,
+                parameters: JSON.stringify(interaction.options.data), // Assuming interaction.options.data contains command parameters
+                success: false,
+                errorCode: error.message,
+                responseTime: responseTime
+            });
+
         }
+
+
     },
 };
-//todo Add command logging , add 'bot interacting logging' implement back end functionality, create database table an
-//todo and research relevant fields and columns,
