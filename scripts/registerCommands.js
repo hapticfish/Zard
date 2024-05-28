@@ -95,6 +95,370 @@ const commands = [
         .setDescription('Starts the OAuth process (Admin only)')
         .setDefaultMemberPermissions(0), // This effectively removes the command from view for anyone who isn't an admin
     new SlashCommandBuilder()
+        .setName('tf-Notifications')
+        .setDescription('Enable or disable notifications for specific candle timeframes and market events')
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('1h')
+                .setDescription('1 Hour notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('4h')
+                .setDescription('4 Hour notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('daily')
+                .setDescription('Daily notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('weekly')
+                .setDescription('Weekly notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('monthly')
+                .setDescription('Monthly notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('quarterly')
+                .setDescription('Quarterly notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('cme-open')
+                .setDescription('CME Open notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('cme-close')
+                .setDescription('CME Close notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                ).addStringOption(option =>
+                option.setName('second-warning')
+                    .setDescription('Warnings in time')
+                    .setRequired(false)
+                    .addChoices(
+                        { name: '5 minutes', value: '5m' },
+                        { name: '10 minutes', value: '10m' },
+                        { name: '15 minutes', value: '15m' },
+                        { name: '30 minutes', value: '30m' },
+                        { name: '45 minutes', value: '45m' },
+                        { name: '1 hour', value: '1h' },
+                        { name: '2 hours', value: '2h' },
+                        { name: '4 hours', value: '4h' },
+                        { name: '12 hours', value: '12h' },
+                        { name: '1 day', value: '1d' },
+                        { name: '1 week', value: '1w' }
+                    )
+            ))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('market_open')
+                .setDescription('Market Open notifications')
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option =>
+                    option.setName('first-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                )
+                .addStringOption(option =>
+                    option.setName('second-warning')
+                        .setDescription('Warnings in time')
+                        .setRequired(false)
+                        .addChoices(
+                            { name: '5 minutes', value: '5m' },
+                            { name: '10 minutes', value: '10m' },
+                            { name: '15 minutes', value: '15m' },
+                            { name: '30 minutes', value: '30m' },
+                            { name: '45 minutes', value: '45m' },
+                            { name: '1 hour', value: '1h' },
+                            { name: '2 hours', value: '2h' },
+                            { name: '4 hours', value: '4h' },
+                            { name: '12 hours', value: '12h' },
+                            { name: '1 day', value: '1d' },
+                            { name: '1 week', value: '1w' }
+                        )
+                )),
+    new SlashCommandBuilder()
         .setName('senti')
         .setDescription('returns live market sentiment analysis data.')
         .addStringOption(option =>
