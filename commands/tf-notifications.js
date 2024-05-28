@@ -19,7 +19,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -36,7 +36,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -62,7 +62,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -79,7 +79,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -105,7 +105,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -122,7 +122,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -148,7 +148,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -165,7 +165,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -191,7 +191,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -208,7 +208,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -234,7 +234,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -251,7 +251,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -277,7 +277,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -294,7 +294,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -320,7 +320,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -337,7 +337,7 @@ module.exports = {
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -363,7 +363,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -381,7 +381,7 @@ module.exports = {
                 .addStringOption(option =>
                     option.setName('second-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -475,9 +475,9 @@ module.exports = {
 * //todo test to make sure that all to them work for different times
 * //todo create handling for when disabled in database
 * //todo test disabled feture for notification
-* //todo warning 1 and warning 2 is not showing up in database
+
 *    //todo time frame warning should be required
-* //todo make sure that these notifications are active till canceled.
+*    //todo make sure that these notifications are active till canceled.
 *    //todo make sure that they are loaded and still active before and after reboots
 *
 * */

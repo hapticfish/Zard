@@ -108,7 +108,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -125,7 +125,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -151,7 +151,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -168,7 +168,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -194,7 +194,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -211,7 +211,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -237,7 +237,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -254,7 +254,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -280,7 +280,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -297,7 +297,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -323,7 +323,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -340,7 +340,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -366,7 +366,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -383,7 +383,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -409,7 +409,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -426,7 +426,7 @@ const commands = [
                 ).addStringOption(option =>
                 option.setName('second-warning')
                     .setDescription('Warnings in time')
-                    .setRequired(false)
+                    .setRequired(true)
                     .addChoices(
                         { name: '5 minutes', value: '5m' },
                         { name: '10 minutes', value: '10m' },
@@ -452,7 +452,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },
@@ -470,7 +470,7 @@ const commands = [
                 .addStringOption(option =>
                     option.setName('second-warning')
                         .setDescription('Warnings in time')
-                        .setRequired(false)
+                        .setRequired(true)
                         .addChoices(
                             { name: '5 minutes', value: '5m' },
                             { name: '10 minutes', value: '10m' },

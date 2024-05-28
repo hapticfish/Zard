@@ -4,26 +4,49 @@ const db = require('../database/tfnotificationsModel'); // Adjust the path as ne
 
 module.exports = {
     init(client) {
+        console.log('Initializing notification scheduler...');
         // Schedule a task to check for notifications every minute
         cron.schedule('* * * * *', async () => {
+            console.log('Running scheduled task to check notifications...');
+            const currentTime = moment.utc();
+            await this.checkNotifications(currentTime, client);
+        });
+    },
+
+    async checkNotifications(currentTime, client) {
+        console.log('Running scheduled task to check notifications...');
+        try {
             const notifications = await db.getEnabledNotifications(); // Get all enabled notifications
+            console.log('Enabled notifications:', notifications);
 
             notifications.forEach(notification => {
-                const currentTime = moment.utc(); // Get the current UTC time
+                console.log('Current UTC time:', currentTime.format());
 
                 const eventTime = getEventTime(notification.event_type); // Calculate the next event time in UTC
-                const firstWarningTime = eventTime.clone().subtract(parseDuration(notification.warning_1)); // Calculate the first warning time
-                const secondWarningTime = eventTime.clone().subtract(parseDuration(notification.warning_2)); // Calculate the second warning time
+                console.log('Event time for', notification.event_type, ':', eventTime.format());
 
-                if (currentTime.isSame(firstWarningTime, 'minute')) {
-                    sendNotification(notification.user_id, `Notification 1 for ${notification.event_type} event/close approaching in ${notification.warning_1} `);
-                }
+                if (notification.warning_1 && notification.warning_2) {
+                    const firstWarningTime = eventTime.clone().subtract(parseDuration(notification.warning_1)); // Calculate the first warning time
+                    const secondWarningTime = eventTime.clone().subtract(parseDuration(notification.warning_2)); // Calculate the second warning time
+                    console.log('First warning time:', firstWarningTime.format());
+                    console.log('Second warning time:', secondWarningTime.format());
 
-                if (currentTime.isSame(secondWarningTime, 'minute')) {
-                    sendNotification(notification.user_id, `Notification 2 for ${notification.event_type} event/close approaching in ${notification.warning_1}`);
+                    if (currentTime.isSame(firstWarningTime, 'minute')) {
+                        console.log('Sending first warning for', notification.event_type);
+                        sendNotification(client, notification.user_id, `Notification 1 for ${notification.event_type} event/close approaching in ${notification.warning_1}`);
+                    }
+
+                    if (currentTime.isSame(secondWarningTime, 'minute')) {
+                        console.log('Sending second warning for', notification.event_type);
+                        sendNotification(client, notification.user_id, `Notification 2 for ${notification.event_type} event/close approaching in ${notification.warning_2}`);
+                    }
+                } else {
+                    console.log(`Skipping notification for ${notification.event_type} due to null warnings.`);
                 }
             });
-        });
+        } catch (error) {
+            console.error('Error checking notifications:', error);
+        }
     }
 };
 
@@ -140,14 +163,15 @@ function parseDuration(duration) {
     }
 }
 
-// Function to send notification (implement as needed)
+// Function to send notification
 function sendNotification(client, userId, message) {
-    // Send the notification to the user
+    console.log(`Attempting to send notification to user ${userId}: ${message}`);
     client.users.fetch(userId)
         .then(user => {
-            user.send(message);
+            console.log(`Fetched user ${user.tag} (${user.id}), sending message...`);
+            user.send(message)
+                .then(() => console.log(`Notification sent to user ${userId}`))
+                .catch(error => console.error(`Failed to send notification to user ${userId}:`, error));
         })
-        .catch(console.error);
+        .catch(error => console.error(`Failed to fetch user ${userId}:`, error));
 }
-
-//todo implement the send notification to the user direct message
