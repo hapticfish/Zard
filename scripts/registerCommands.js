@@ -101,7 +101,10 @@ const commands = [
             subcommand
                 .setName('1h')
                 .setDescription('1 Hour notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -141,7 +144,10 @@ const commands = [
             subcommand
                 .setName('4h')
                 .setDescription('4 Hour notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -181,7 +187,10 @@ const commands = [
             subcommand
                 .setName('daily')
                 .setDescription('Daily notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -221,7 +230,10 @@ const commands = [
             subcommand
                 .setName('weekly')
                 .setDescription('Weekly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -261,7 +273,10 @@ const commands = [
             subcommand
                 .setName('monthly')
                 .setDescription('Monthly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -301,7 +316,10 @@ const commands = [
             subcommand
                 .setName('quarterly')
                 .setDescription('Quarterly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -341,7 +359,10 @@ const commands = [
             subcommand
                 .setName('cme-open')
                 .setDescription('CME Open notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -381,7 +402,10 @@ const commands = [
             subcommand
                 .setName('cme-close')
                 .setDescription('CME Close notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')
@@ -421,7 +445,10 @@ const commands = [
             subcommand
                 .setName('market_open')
                 .setDescription('Market Open notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
                     option.setName('first-warning')
                         .setDescription('Warnings in time')

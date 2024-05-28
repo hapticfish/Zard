@@ -145,3 +145,5 @@ function sendNotification(userId, message) {
     // Send the notification to the user
     console.log(`Sending notification to user ${userId}: ${message}`);
 }
+
+//todo implament the send notification to the user directo message

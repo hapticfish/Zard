@@ -12,9 +12,12 @@ module.exports = {
             subcommand
                 .setName('1h')
                 .setDescription('1 Hour notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -31,7 +34,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -52,9 +55,12 @@ module.exports = {
             subcommand
                 .setName('4h')
                 .setDescription('4 Hour notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -71,7 +77,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -92,9 +98,12 @@ module.exports = {
             subcommand
                 .setName('daily')
                 .setDescription('Daily notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -111,7 +120,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -132,9 +141,12 @@ module.exports = {
             subcommand
                 .setName('weekly')
                 .setDescription('Weekly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -151,7 +163,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -172,9 +184,12 @@ module.exports = {
             subcommand
                 .setName('monthly')
                 .setDescription('Monthly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -191,7 +206,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -212,9 +227,12 @@ module.exports = {
             subcommand
                 .setName('quarterly')
                 .setDescription('Quarterly notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -231,7 +249,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -252,9 +270,12 @@ module.exports = {
             subcommand
                 .setName('cme-open')
                 .setDescription('CME Open notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -271,7 +292,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -292,9 +313,12 @@ module.exports = {
             subcommand
                 .setName('cme-close')
                 .setDescription('CME Close notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -311,7 +335,7 @@ module.exports = {
                             { name: '1 week', value: '1w' }
                         )
                 ).addStringOption(option =>
-                option.setName('Second Warning')
+                option.setName('second-warning')
                     .setDescription('Warnings in time')
                     .setRequired(false)
                     .addChoices(
@@ -332,9 +356,12 @@ module.exports = {
             subcommand
                 .setName('market_open')
                 .setDescription('Market Open notifications')
-                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoice('enable', 'enable').addChoice('disable', 'disable'))
+                .addStringOption(option => option.setName('action').setDescription('Enable or disable').setRequired(true).addChoices(
+                            { name: 'Enable', value: 'enable' },
+                            { name: 'Disable', value: 'disable' }
+                        ))
                 .addStringOption(option =>
-                    option.setName('First Warning')
+                    option.setName('first-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -352,7 +379,7 @@ module.exports = {
                         )
                 )
                 .addStringOption(option =>
-                    option.setName('Second Warning')
+                    option.setName('second-warning')
                         .setDescription('Warnings in time')
                         .setRequired(false)
                         .addChoices(
@@ -379,10 +406,12 @@ module.exports = {
             await updateLastBotInteraction(interaction.user.id);
 
             const action = interaction.options.getString('action');
-            const firstWarning = interaction.options.getString('first_warning');
-            const secondWarning = interaction.options.getString('second_warning');
+            const firstWarning = interaction.options.getString('first-warning');
+            const secondWarning = interaction.options.getString('second-warning');
             const event = interaction.options.getSubcommand();
             const userId = interaction.user.id;
+
+            console.log(`Action: ${action} FirstWarning: ${firstWarning} SecondWarning: ${secondWarning} Event: ${event} UserID: ${userId}`)
 
             /// Update or insert notification settings in the database
             if (action === 'enable') {
@@ -438,3 +467,17 @@ module.exports = {
         }
     },
 };
+
+
+/*
+*
+*
+* //todo test to make sure that all to them work for different times
+* //todo create handling for when disabled in database
+* //todo test disabled feture for notification
+* //todo warning 1 and warning 2 is not showing up in database
+*    //todo time frame warning should be required
+* //todo make sure that these notifications are active till canceled.
+*    //todo make sure that they are loaded and still active before and after reboots
+*
+* */
