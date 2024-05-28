@@ -1,18 +1,6 @@
 
 -IMPLEMENTATION-
 
--Create a subscribe to Notification feature 10% and 25% time warning
-    for
-        1h (10% and 25% time warning)
-        4h (10% and 25% time warning)
-        Daily (10% and 25% time warning)
-        Weekly (12h b4 and 4hr b4 1hr b4 time warning)
-        Monthly (1w, 1d, 12h, 4h, 2h, 1h)
-        Quarterly (1w, 1d, 12h, 4h, 2h, 1h)
-        CME Close and open (10% and 25% time warning)
-        Market Opens
-
-
 -chart pattern identifier, (send notification to subscribed user)
 
 -Sentiment Analysis
