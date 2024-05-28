@@ -6,7 +6,7 @@ const {logCommandUsage} = require("../database/commandUsageModel"); // Updated p
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('tf-Notifications')
+        .setName('tf-notifications')
         .setDescription('Enable or disable notifications for specific candle timeframes and market events')
         .addSubcommand(subcommand =>
             subcommand

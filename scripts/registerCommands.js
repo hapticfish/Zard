@@ -95,7 +95,7 @@ const commands = [
         .setDescription('Starts the OAuth process (Admin only)')
         .setDefaultMemberPermissions(0), // This effectively removes the command from view for anyone who isn't an admin
     new SlashCommandBuilder()
-        .setName('tf-Notifications')
+        .setName('tf-notifications')
         .setDescription('Enable or disable notifications for specific candle timeframes and market events')
         .addSubcommand(subcommand =>
             subcommand
