@@ -1,10 +1,15 @@
 
 -IMPLEMENTATION-
 
+-add discord bot scanning into the scraping part to aggregate into sentiment analysis feed.
+-refine and finish twitter scrapping an implementation
+    -add twitter influence subscribe notification feature
+    -add twitter news subscribe feature
+
+
 -chart pattern identifier, (send notification to subscribed user)
 
 -Sentiment Analysis
-    -scan existing chats from all channels accepted in discords
     -call to display current analysis
     -other functions
 
@@ -40,12 +45,8 @@ monetization
 
 
 -BUGS-
--update price slash command description to include btcusdt ,  ethusdt ect as examples
--alerts in second session appear to not be loading from previous session.
--optimize processing speed for blockT
--adding alerts appears to not persist in the list when restarted
--handle time zone is not accepting correct values America/Argentina/Buenos_Aires
+-optimize processing speed for block
 
 -TESTING-
 
-
+-test TF notification for all arguments

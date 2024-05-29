@@ -84,7 +84,7 @@ const commands = [
     new SlashCommandBuilder().setName('price').setDescription('Show current price for provided cryptocurrency from 3 exchanges.')
         .addStringOption(option =>
             option.setName('symbol')
-                .setDescription('The ticker symbol of the cryptocurrency')
+                .setDescription('Ticker symbol of the cryptocurrency (e.g., BTCUSDT, ETHUSDT).')
                 .setRequired(true)),
     new SlashCommandBuilder()
         .setName('report-bug')

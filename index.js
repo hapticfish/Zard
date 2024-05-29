@@ -6,6 +6,7 @@ const {initAlerts} = require("./services/websocketService");
 const express = require('express');
 const app = express();
 const notificationScheduler = require('./schedulers/notificationScheduler'); // Initialize the scheduler
+const { fetchSentimentData } = require('./services/aggregator'); // Import fetchData from aggregator
 
 const client = new Client({
     intents: [
@@ -50,6 +51,10 @@ client.once('ready', async () => {
         // Initialize the scheduler
         notificationScheduler.init(client);
         console.log('Notification scheduler initialized successfully.');
+
+        // Start fetching data
+        await fetchSentimentData(client);
+        console.log('Data fetching started successfully.');
     } catch (error) {
         console.error('Failed to initialize alerts or database error:', error);
     }
