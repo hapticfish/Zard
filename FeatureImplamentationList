@@ -1,49 +1,52 @@
 
+-TODOs-
+    -Add/register Twitter API keys ect
+    -collect/configure Kafka stream stuff
+    -start building and designing the sentiment analysis cleaning/normalization/data prep and processing
+    -Handle run errors
+        -Error: Cannot find module 'twitter-api-v2'
+
 -IMPLEMENTATION-
-    -add twitter influence subscribe notification feature
-    -add twitter news subscribe feature
+
+    -Add Twitter implementation
+        -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
+        -add twitter influence subscribe notification feature
+        -add twitter news subscribe feature
+
+    -chart pattern identifier, (send notification to subscribed user)
+
+    -Sentiment Analysis
+        -call to display current analysis
+        -Should show graphics charts for analysis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
+        -Individual analysis for discord chat analysis and twitter and an overall aggregate
 
 
--chart pattern identifier, (send notification to subscribed user)
+    -enable SSL certificate and pay it
 
--Sentiment Analysis
-    -call to display current analysis
-    -other functions
+    -Enable versioning after launch
 
-    -Should show graphics charts for analysis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
-    -Individual analysis for discord chat analysis and twitter and an overall aggregate
+    -Complete Bot marketing and set up
+        Set up Bot website
+        List Privacy Policy page
+        Create Terms of service page
+        createLinked Roles Verification URL (for paid service role verification)
+        Enable 2FA
+        Enable the 'Team' of Developers
+        obtain bot verification (fill out form, ect)
 
--Add Twitter implementation
-    -scanning tweets for sentiment
-    -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
-
-enable SSL certificate and pay it
-
-Enable versioning after launch
-
-Complete Bot marketing and set up
-    Set up Bot website
-    List Privacy Policy page
-    Create Terms of service page
-    createLinked Roles Verification URL (for paid service role verification)
-    Enable 2FA
-    Enable the 'Team' of Developers
-    obtain bot verification (fill out form, ect)
-
-monetization
-    -find settle effective way for adds and affiliates
-    -affiliate links intelligently
-    -reference links for PrimeXBT and other exchanges
-    -website with merchandise
-        will need database for monetization (must design it and model it)
-    - have vairable pricing for testing which price make has the most subscribers
-    FIND PRICING MODEL THAT PREVENTS SINGLE USE SHARING EXPLOITATION (ie, one user buys and shared results.)
+    -monetization
+        -find settle effective way for adds and affiliates
+        -affiliate links intelligently
+        -reference links for PrimeXBT and other exchanges
+        -website with merchandise
+            will need database for monetization (must design it and model it)
+        - have vairable pricing for testing which price make has the most subscribers
+        FIND PRICING MODEL THAT PREVENTS SINGLE USE SHARING EXPLOITATION (ie, one user buys and shared results.)
 
 
 
 -BUGS-
--optimize processing speed for block
+    -optimize processing speed for block
 
 -TESTING-
-
--test TF notification for all arguments
+    -test TF notification for all arguments
