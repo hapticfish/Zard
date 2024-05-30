@@ -12,8 +12,23 @@ const roClient = twitterClient.readOnly;
 
 exports.fetchTweets = async (query) => {
     try {
-        const tweets = await roClient.v2.search(query, { 'tweet.fields': 'created_at,lang' });
-        return tweets.data;
+        const tweets = await roClient.v2.search(query, { 'tweet.fields': 'created_at,lang,public_metrics,author_id' });
+        return tweets.data.map(tweet => ({
+            source_id: tweet.id,
+            source: 'Twitter/X',
+            content: tweet.text,
+            title: null,
+            keywords: null,
+            post_score: tweet.public_metrics.favorite_count,
+            num_comments: tweet.public_metrics.reply_count,
+            url: `https://twitter.com/i/web/status/${tweet.id}`,
+            engagment_metrics: tweet.public_metrics.retweet_count,
+            author_id: tweet.author_id,
+            platform_creation_time: tweet.created_at,
+            system_capture_time: new Date().toISOString(),
+            batch_ids: null, // You need to populate this with actual batch ID when processing
+            language: tweet.lang
+        }));
     } catch (error) {
         console.error('Failed to fetch tweets:', error);
         return [];

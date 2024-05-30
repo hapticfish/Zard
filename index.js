@@ -6,7 +6,8 @@ const {initAlerts} = require("./services/websocketService");
 const express = require('express');
 const app = express();
 const notificationScheduler = require('./schedulers/notificationScheduler'); // Initialize the scheduler
-const { fetchSentimentData } = require('./services/aggregator'); // Import fetchData from aggregator
+const { fetchSentimentData, startDataStream} = require('./services/aggregator'); // Import fetchData from aggregator
+const { startMessageStream } = require('./services/discord/discordAPI'); // Import startMessageStream from discordAPI
 
 const client = new Client({
     intents: [
@@ -53,8 +54,12 @@ client.once('ready', async () => {
         console.log('Notification scheduler initialized successfully.');
 
         // Start fetching data
-        await fetchSentimentData(client);
+        startDataStream(client);
         console.log('Data fetching started successfully.');
+
+        // Start streaming Discord messages
+        startMessageStream(client);
+        console.log('Discord message streaming started successfully.');
     } catch (error) {
         console.error('Failed to initialize alerts or database error:', error);
     }

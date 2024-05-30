@@ -1,8 +1,5 @@
 
 -IMPLEMENTATION-
-
--add discord bot scanning into the scraping part to aggregate into sentiment analysis feed.
--refine and finish twitter scrapping an implementation
     -add twitter influence subscribe notification feature
     -add twitter news subscribe feature
 

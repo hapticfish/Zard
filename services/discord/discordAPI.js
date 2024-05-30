@@ -1,7 +1,6 @@
-// discordAPI.js
 const { sendToKafka } = require('../kafka/kafkaProducer');
 
-async function fetchMessages(client, channelId, limit = 10) {
+async function fetchMessagesFromChannel(client, channelId, limit = 100) {
     const channel = await client.channels.fetch(channelId);
     if (!channel || !channel.isText()) {
         throw new Error('Channel not found or not a text channel');
@@ -17,37 +16,38 @@ async function fetchMessages(client, channelId, limit = 10) {
     }));
 }
 
-async function startMessageStream(client, channelId) {
-    const channel = await client.channels.fetch(channelId);
-    if (!channel || !channel.isText()) {
-        throw new Error('Channel not found or not a text channel');
+async function fetchAllMessages(client) {
+    const channels = client.channels.cache.filter(channel => channel.isText());
+    let allMessages = [];
+    for (const [channelId, channel] of channels) {
+        const messages = await fetchMessagesFromChannel(client, channelId);
+        allMessages = allMessages.concat(messages);
     }
+    return allMessages;
+}
 
-    // Fetch initial messages
-    channel.messages.fetch({ limit: 10 }).then(messages => {
-        messages.forEach(msg => {
-            sendToKafka('discord-messages', {
-                id: msg.id,
-                content: msg.content,
-                author: msg.author.username,
-                createdAt: msg.createdAt,
-                channelId: channelId,
-            });
-        });
-    });
-
-    // Listen to new messages
+function startMessageStream(client) {
     client.on('messageCreate', (message) => {
-        if (message.channel.id === channelId) {
+        if (message.channel.isText()) {
             sendToKafka('discord-messages', {
                 id: message.id,
                 content: message.content,
                 author: message.author.username,
                 createdAt: message.createdAt,
-                channelId: channelId,
+                channelId: message.channel.id,
             });
+        }
+    });
+
+    client.on('channelCreate', (channel) => {
+        if (channel.isText()) {
+            fetchMessagesFromChannel(client, channel.id).then(messages => {
+                messages.forEach(msg => {
+                    sendToKafka('discord-messages', msg);
+                });
+            }).catch(console.error);
         }
     });
 }
 
-module.exports = { fetchMessages, startMessageStream };
+module.exports = { fetchAllMessages, startMessageStream };
