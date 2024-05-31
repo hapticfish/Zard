@@ -12,7 +12,7 @@ const roClient = twitterClient.readOnly;
 
 exports.fetchTweets = async (query) => {
     try {
-        const tweets = await roClient.v2.search(query, { 'tweet.fields': 'created_at,lang,public_metrics,author_id' });
+        const tweets = await roClient.v2.search(query, { 'tweet.fields': 'id,created_at,text,lang,public_metrics,author_id' });
         return tweets.data.map(tweet => ({
             source_id: tweet.id,
             source: 'Twitter/X',
@@ -32,6 +32,34 @@ exports.fetchTweets = async (query) => {
     } catch (error) {
         console.error('Failed to fetch tweets:', error);
         return [];
+    }
+};
+
+exports.postTweet = async (status) => {
+    try {
+        return await twitterClient.v2.tweet(status);
+    } catch (error) {
+        console.error('Failed to post tweet:', error);
+        throw error;
+    }
+};
+
+exports.deleteTweet = async (tweetId) => {
+    try {
+        await twitterClient.v2.deleteTweet(tweetId);
+        console.log(`Tweet with ID ${tweetId} deleted successfully.`);
+    } catch (error) {
+        console.error('Failed to delete tweet:', error);
+        throw error;
+    }
+};
+
+exports.getUserDetails = async () => {
+    try {
+        return await roClient.v2.me();
+    } catch (error) {
+        console.error('Failed to fetch user details:', error);
+        throw error;
     }
 };
 
