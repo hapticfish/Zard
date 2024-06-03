@@ -1,6 +1,5 @@
 
 -TODOs-
-    -Add/register Twitter API keys ect
     -collect/configure Kafka stream stuff
     -start building and designing the sentiment analysis cleaning/normalization/data prep and processing
     -Handle run errors
@@ -44,6 +43,18 @@
         FIND PRICING MODEL THAT PREVENTS SINGLE USE SHARING EXPLOITATION (ie, one user buys and shared results.)
 
 
+-Boot Up Instructions/Setups-
+    -set up scripting to handle starting all services like zookeeper and brokers for Kafka
+    -See if Docker can or should be used for this.
+
+    -will need to set up UN and PW in cloud environment for Kafka streams
+
+    -research running and setting up zookeeper / broker for kafka in the cloud
+    -research database storage in cloud and distributed computeing with amazon for the sentiment analyssi
+
+-Security Setups / modifications
+    -Set up SASL for Kafka stream and brokers
+    -Set up SSL cert and intagration
 
 -BUGS-
     -optimize processing speed for block
