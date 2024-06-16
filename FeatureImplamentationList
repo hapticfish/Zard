@@ -14,6 +14,8 @@
 
     -chart pattern identifier, (send notification to subscribed user)
 
+    -volitility detector  (price changes +/- 'change' more then the most recent average price change within the last 5 sec)
+
     -Sentiment Analysis
         -call to display current analysis
         -Should show graphics charts for analysis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
