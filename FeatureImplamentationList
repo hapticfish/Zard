@@ -1,15 +1,342 @@
 
+
 -TODOs-
     -collect/configure Kafka stream stuff
     -start building and designing the sentiment analysis cleaning/normalization/data prep and processing
     -Handle run errors
         -Error: Cannot find module 'twitter-api-v2'
+    -Add twitter notification for whale charts customizable ie above 35mill
+    -add command line arguments w/ flags for on start up ie (running the program with arguments
+    like starting ro stopping spesific services or the webserver or the database
+    or somthing else.)
+    -add command for showing adverage move by time frame in selected time frame. up and down
+    -ADD 'welcome messgae customiziable for Premium level and a standard one
+            created by me to prompt users to sign up for the bot'
+
+    -ADD NOTE: when implementing LLM make the module modular to implement the
+        latest model from Gemini or OpenAI or Grok as needed
+
+-ADD live ChatGPT market analaysis
+    have chat gpt alaysise the market trends, and key points to be called upon
+        analysis adver move percentage
+        adver volue on pump
+        different things that have value.
+
+-ADD for admin plan users channel managment dashboard
+    current user count
+    statisitcs
+    ban/remove
+    other metrics
+
+- NOTE ADD for trading bot and analysis  Included in analayis report on command and scheduled.
+    -Checking all lows on preominatn exchanges have been swept or highs
+        -Bybit
+        -Binance
+        -Coinbase
+        -Kucoin
+        -ect
+    -checking liquidity heat maps areas multiple sources
+
+    -checking live shorts entering at support leveld for imidiate reversal or longs at tops
+        find sources for this
+
+    -checking if spot is buying or selling at levels (within a time frame /preferable live)
+        notification when live updated if spot is buting an
+    -compare alts behavior with BTC moving and vise versa (research what it means, ie alts moving with btc [UP/DWN]
+    - Add more tips from Aps doc and other rescouces.
+    -ADD more
+
+-ADD MARKET TESTING FOR THE TRADING BOT
+    -allow users to select buy / sell indicators to be tested with confluence over time
+        to build a profile over weekly / monthly trends showing
+        what moves have the most success rate.
+            ie BBs+200ema+4h POCs or what ever combinations
+
+-ADD (IMPORTANT!!)
+    Make a trading knolage bank that refrencins all the informational contenct from ape, ez and other docuemtns
+        that can be used to cross check stragies with and to ask questions to and to say things like (what was the x abotu
+        the stratagy from POC ect)
+        (check this stratagie for holes compared to discourd informational resources)
+
+-NOTE ADD
+    make sertain commands extendable into converstations like the Daily Market
+        Analysis funciton with Zard/White Mask
+            make sure its expandible deeply details and restricted to just that
+               thetens to stopp when off topic
+
+-ADD Charts from tradingview import into Dashboard
+    import the trading view dashboard into visuals
+    allow for setting alerts, future buy/ sell orders ecetera
+    and charting to copile with yourdiscord bot
+
+-ADD pretrade checklist enable/disable before trade is intitiated
+
+
+
+-ADD wallet tracker + statistics
+    for trading bot or for notifications add feature where
+    successfull wallet are tracked and notified and implement
+    trade following for those wallets
+
+- ADD CURRENT FUNDING RATE DATA + ANALYSIS (MUST HAVE INDEMAND FEATURE)
+
+
+-ADD ZARD BOT / WHITE MASK GIVE OVERALL ANALYSIS SUMMARY FOR THE DAY
+    -summarizing recent sentiment analays moest recent, and other users sumerized
+    -what people are saying in text and on twitter
+    percentage of prediciton direction (30% of social media sentiement is for
+        a bounce at x 20% is for a bounce at y)
+    technicals (strucures, price action, trends, trend breaks, add others)
+    fundementals (upcoming FOMC, political events, news sentimenet, possible
+        news effecting price upcoming to be aware of)
+
+    -Implementation possibliity
+        have ChatGPT fed all information that is fed to the sentiment analaysi
+        and when asked sumaraize it in chunks and have it ready for providing summaries
+        on request.
+
+
+``````````````````
+-ADD and use Agentic AI to create a comprehensive analytical summary for daily and weekly and 3 day from
+    various sources with Agentic AI agents that automaticaly notifies you when certian threshhodsl are
+    changed or met like Trump is implementing new crypto policies that could effect the market
+    there is a rumor that the SEC might be approving a ripple ETF later this year. ect.
+``````````````````````
+
+-ADD higher tier paid have social media/news updates be live analized by AI/GPT (provide AI notification summarary
+    citation of original, mabey include batch summarys within time frames (2hr, 4hr, 1d, ect) (implement trade
+    trigger into trading bot)
+
+
+-ADD feature allowing users to ask zardbot to find the live link feed for a spesific event and dm it to them.
+
+
+
+-ADD 'Comprehensive checker for multiple statitics/indicator telling
+'       to enter or not'
+            Example: if 4h close dip retest on good level strong bull
+                     if overal trend bull and bounces bought up bull
+                     if other actions corricalte during peak vol buy/sell
+                        times good entry
+                    if planing BTC entry check EthBtc chart ie ( not advised to enter btc position
+                        as EthBtc is bottoming and increase sell pressure is possible) (take into considaration recent behavior)
+
+                        NOTE: make sure each of these has a wheight calculate
+                            total and come up with what level bull or bear
+                            and list calculated indicators
+
+
+-ADD MUST! transaction checker
+    add any transaction Tron trc 20 Tether, BTC (all styles) ect and returns the transacction status
+    and info.
+
+-ADD 'SPOT LEADING INDICATOR'
+    calculated by aggragating price from spot only exchanes for premium price
+        for example spot is 300 dollars more on coin base then a futures price
+        also future price is 300 dollars more then spot exchange price
+
+-NOTE: ADD
+    for social media feture store most recent api queues to conserve
+        limits (cache api quiries and results to have request for the command
+        quirie the database
+
+
+-Add AI ChatGPT4o Mini
+    Use AI for creating channel spesific leader boards analyising users posts vs market behavior
+    Create Spot Selling / Buying indicator (gradient lvls High/Low/Ultra Low / Ultra High (totals winthin a span of min/sec))
+    use ai for automatic moderation
+    use ai for trading advice, train ai on conversation batches from best traders conversations.
+
+
+-Add chart analysis feature
+    -submit chart to Zard returns analysis with current market conditions and suggestions
+
+-
+
+-WEB DASHBOARD ANALYITICS FEATURES
+    CHARTS
+    ANIMATED GRAPHS
+    MOST VALUBLE AND DESIRED ANALYTICS
+    SOCIAL MEDIA DATA TRACKING AND ANLYTICS
+    SOCILA MEDIA HISTORICAL TRANDES AND ANALYSIS FROM IT
+    145/MO TEIR
+        backtesting tools
+        correlations tools {++ Indemand for all coins chart for all}
+        risk metrics
+        allocation optimization metrics
+        extended historical data
+        back testing historical strategies
+        Institutional-Grade Research
+            Some platforms offer exclusive market reports, deep dives,
+            and institutional-level analysis on market conditions, coins,
+             or upcoming events, accessible only to premium subscribers.
+        Proprietary Analytics
+            Some paid tiers offer proprietary data points such as predicted
+            volatility indexes, fair value estimations for assets, or unique
+             trading signals based on historical market behavior.
+         AI/ML-Based Predictive Models
+            Advanced algorithms or machine learning models that predict market
+             trends, price movement, or volatility typically require paid access.
+         Alpha Signals
+             Proprietary trading signals that give users a potential edge in
+             identifying trends early, based on data science or AI.
+         Custom Strategy Development
+            Some platforms allow paid users to develop, test, and deploy
+            their own trading strategies using advanced backtesting and
+            simulation tools.
+
+    [Implementation tools for Dashboard Analytics]
+        {
+            Chart.js
+            D3.js (Data-Driven Documents)
+            Plotly.js
+            ECharts (Apache ECharts)
+            Highcharts
+            FusionCharts
+            Three.js (for 3D visualizations)
+            Recharts
+
+        }
+
+
+    - Give ZardBot a personality with ChatGPT and a back story to assist
+        his personal responses
+            Used to live during the time of the dinorsars
+            was smarter than most
+            is sneaky but resonable slighly untrustworthy
+            slighly british accent and them (using words like Yee old, and sir)
+            personality shares some traits to White Mask Varré from eldenring
+            Character Traits
+                Charismatic
+                Loyal
+                Ruthless
+                Machiavellian
+                Patronizing
+
+    - /ASK (ask zard bot anything and he will respond in kind with the perosn
+    ality of White Mask Varre in Zard bot form)
+
+    - /ARCHIVE COMMAND (USER REQUESTED)
+        Archinving Iconic posts 'I over trade > do you have a girlfriend bro.
+        Archinve original convo / image of it.
+
+
+    - /ANALYIZE
+        give a sumation of current market contions and recomentations
+            from sentiment, fundementals, PA, structures ect.
+
+-COMPETITIVE FEATURES
+    -TVcharts
+    -crypto stats
+    -heat maps
+    -ETH Gas tracking fees
+    -Eth Banalence lookups
+    -Biggest gainer/looser top 10-20
+    -exhcnage statistics (reseach)
+    -Coin Address acctivity
+    -Sato Indicator 'Attention Degens, Sato is "Long/Short"
+        trigger recoreding as soon as live
+        use color coding to trigger capture or else
+    -stable defusion meme generator
+    -'Ask questions to mods, Ticketing bot'
+
+-ADD Price Action Analylizer
+    runs analizer for different metrics
+        -how long price stays at POC after dump or pump
+        -how long sidways movemnt befor move
+        -what time of day moves happen
+        -what days have the big moves
+        -choose scope of anaylsis  day week ect
+        add more
+
+-ADDITIONAL FEATURES
+    -Smart Admin Auto Polling
+        Allow Admins to enable/disable critical points polling
+        Use Python TA libraies to manage and do techincal analysis Use TA-Lib
+    -Smart Polling
+        collect data from pole post it
+        give warnings when close to ending to main chat
+        use @here when posted and fininshed
+        allow users to create polls
+    -fundemental anaylsis events (FOMC, CPI, ect scrapped and auto warnings)
+
+
+    -Market prediction Poles when market is at inflection points or going sidways for prolonged periods (how to determine inflection points)
+    -Cramer notification
+    -DYDX notitifcation
+    -check viability for AI/ ChatGPT o Mini for quick pre analysis of text ecteera for better filtering into model
+    -NASDAQ and SnP 500 + other big move change notifications.
+    -daily, weekly monthly sentiments historic plot chart
+    -w/ sentiment alanysis Premium Plus, get reasoning for bearish/bullish (Sato Long, Cramer Short, Head n Sholders 4h ect, bullet list)
+    -Allow Premium Plus to customize their preference for special indicators being long/short ie Sato or Cramer ect)
+    -creat a track record tracking historical accuracy of Sato, Cramer, and other infuencers w/ hit rates Premium Plus
+
+-ADMIN FEATURES
+    (offer self managment or where I manage for them for more)
+    -Post Once
+        Post on Twitter/X or Else auto post to designated channel
+        For influencers posts insensitive for users to like/retweet posts (leader boards, rewards, ect) (make it built in)
+        [NOTE: ADVERTISE THIS TO INFLUENCERS FOR ENGAGMENT GROWTH AND SHOW STATISTICS]
+    -Simplified Role management
+    -integrate exchange/promotion for verification of sign up. IE prime verification for role.
+    -kick from server auto after 3mo inactivity
+    -Automate adding people on ref link
+
+-DEV FEATURES
+    -Create and title lists that are callable
+        -Q's / Todo Lists
+
+
+-Charting notification and features
+    -show hourly, daily, weekly, monthly open and close areas (key s/r areas) Notifications and chart (in top teir sub level)
+
+
 
 -IMPLEMENTATION-
 
     -Add Twitter implementation
         -post any and all from well known crypto news accounts directly to main chat (The Spectator Index, Walter Bloomberg, NewsWire)
         -add twitter influence subscribe notification feature
+            -@CredibleCrypto
+
+             @honey_xbt
+
+             @TraderKyros   (Maaroufi Yassine)
+
+             @EZCharts_
+
+             @i_am_jackis
+
+             @themarcojo
+
+             @trader_koala
+
+             @Learnernoearner
+
+             @IncomeSharks
+
+             @TheCryptoDog
+
+             @tombheads
+
+             @CryptoElPres
+
+             @eliz883
+
+             @CryptoSays
+
+             @terrific_M
+
+             @Arshmeister
+
+             @ImTrizzy
+
+             @sunnyxcrypto
+
+             @nabraskaGooner
+
+             @Captain_lole1  (high ww)
+
         -add twitter news subscribe feature
 
     -chart pattern identifier, (send notification to subscribed user)
@@ -17,6 +344,8 @@
     -volitility detector  (price changes +/- 'change' more then the most recent average price change within the last 5 sec)
 
     -Sentiment Analysis
+        -AI filtering and image to text analysis for ML model
+            have LLM read image scan and then sepratate cleaning for sentiment
         -call to display current analysis
         -Should show graphics charts for analysis and sentiment by hour, day week month. (positive/negitive market perspective) (bullish/Bearish) market perspective
         -Individual analysis for discord chat analysis and twitter and an overall aggregate
@@ -36,6 +365,7 @@
         obtain bot verification (fill out form, ect)
 
     -monetization
+        -Testing mulitple different price tears for random users to calculate what works the best Unbenwnst to them
         -find settle effective way for adds and affiliates
         -affiliate links intelligently
         -reference links for PrimeXBT and other exchanges
